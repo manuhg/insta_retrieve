@@ -3,6 +3,7 @@ import Cookies from 'universal-cookie';
 const cookies = new Cookies();
 const date = new Date();
 
+export const auth_url ='iauth';
 export const acToken='access_token';
 
 export function setCookie(name, value, expires) {
@@ -18,7 +19,7 @@ export function getCookie(name)
 }
 export function goToLogin() {
     setCookie('hashValue', window.location.hash);
-    window.location.href = '/iauth';
+    window.location.href = '/'+auth_url;
 }
 export function isLoggedIn()
 {

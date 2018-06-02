@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {BrowserRouter as Router, Route} from "react-router-dom";
-import {AuthPage,auth_url} from './AuthPage';
+import {AuthPage} from './AuthPage';
+import {auth_url} from './Auth';
 import App from './App';
 class AppRoutes extends Component
 {

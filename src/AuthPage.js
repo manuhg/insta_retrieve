@@ -8,12 +8,11 @@ import Cookies from 'universal-cookie';
 import './App.css';
 import logo from './img/pickcel.png';
 import AppBody from './AppBody';
-import { isLoggedIn ,login} from './Auth';
+import { auth_url, isLoggedIn ,login} from './Auth';
 
 
 const cookies = new Cookies();
 
-export const auth_url ='iauth';
 export class AuthPage extends Component
 {
     render()
