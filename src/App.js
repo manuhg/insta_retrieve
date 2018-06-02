@@ -31,7 +31,7 @@ class App extends Component {
                         <Row>
                           <Col md={12}>
                             <a
-                              href="https://api.instagram.com/oauth/authorize/?client_id=73b2e998521244e2b98b255943b42e87&redirect_uri=http://manuhegde.in&response_type=token">
+                              href="https://api.instagram.com/oauth/authorize/?client_id=73b2e998521244e2b98b255943b42e87&redirect_uri=https://manuhegde.in&response_type=token">
                               
                               <Button bsStyle="primary"><FontAwesomeIcon icon={['fab', 'instagram']} size='2x'/>
                                 <font size="5">&nbsp;&nbsp;&nbsp;Login with Instagram</font>
