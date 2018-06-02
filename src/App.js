@@ -46,7 +46,7 @@ function splithash(str) {
   }
   render() {
     if(isLoggedIn())
-      return (<div> <AppBody><Pictures accessToken={this.state.accessToken} /> </AppBody></div>);
+      return (<Pictures accessToken={this.state.accessToken} />);
     else
       this.login();
     
