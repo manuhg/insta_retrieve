@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {BrowserRouter as Router, Route} from "react-router-dom";
-import IAuth from './IAuth';
+import {AuthPage,auth_url} from './AuthPage';
 import App from './App';
 class AppRoutes extends Component
 {
@@ -10,7 +10,7 @@ class AppRoutes extends Component
       <Router>
         <div>
         <Route exact path="/" component={App} />
-        <Route path="/iauth" component={IAuth}/>
+        <Route path={"/"+auth_url} component={AuthPage}/>
           </div>
       </Router>
     );

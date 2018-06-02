@@ -1,5 +1,12 @@
-import React, {Component,Children} from 'react';
-import { Panel, Grid, Row, Col, Button, Badge } from 'react-bootstrap';
+import React, {Component} from 'react';
+import {
+  Panel,
+  Grid,
+  Row,
+  Col,
+  Button,
+  Badge
+} from 'react-bootstrap';
 import FontAwesomeIcon from '@fortawesome/react-fontawesome';
 import brands from '@fortawesome/fontawesome-free-brands';
 import {Redirect} from 'react-router-dom';
@@ -9,24 +16,40 @@ import './App.css';
 import logo from './img/pickcel.png';
 import AppBody from './AppBody';
 import Pictures from './Pictures';
-import IAuth from './IAuth';
-
+import { isLoggedIn ,goToLogin, logout} from './Auth';
+import AuthPage from './AuthPage';
 
 const cookies = new Cookies();
-
-class App extends Component {
+function splithash(str) {
+  // in case user specifies multiple hashes var
+  // hashvals=window.location.hash.split('#');
+  var hashvals = str.split('#');
+  for (var i = 0; i < hashvals.length; i++) 
+    if (!hashvals[i]) 
+      hashvals.splice(i, 1);
+    }
+  class App extends Component {
   constructor()
   {
     super();
     this.state = {
-      accessToken: null
+      accessToken: cookies.get('ac_token')
     };
   }
-
+  logout()
+  {
+    this.setState({accessToken: null});
+    logout();
+  }
+  login()
+  {
+    goToLogin();
+  }
   render() {
-    console.log(this.props);
     if (!this.state.accessToken) 
-      return (<AppBody>Welcome to this app!</AppBody>);
+      return (
+        <AppBody>Welcome to this app!</AppBody>
+      );
     }
   }
 
