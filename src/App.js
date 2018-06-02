@@ -1,11 +1,19 @@
-import React, {Component} from 'react';
-import logo from './img/pickcel.png';
-import './App.css';
-import Pictures from './Pictures';
-import {Panel, Grid, Row, Col, Button, Badge} from 'react-bootstrap';
+import React, {Component,Children} from 'react';
+import { Panel, Grid, Row, Col, Button, Badge } from 'react-bootstrap';
 import FontAwesomeIcon from '@fortawesome/react-fontawesome';
 import brands from '@fortawesome/fontawesome-free-brands';
-import verge from 'verge';
+import {Redirect} from 'react-router-dom';
+import Cookies from 'universal-cookie';
+
+import './App.css';
+import logo from './img/pickcel.png';
+import AppBody from './AppBody';
+import Pictures from './Pictures';
+import IAuth from './IAuth';
+
+
+const cookies = new Cookies();
+
 class App extends Component {
   constructor()
   {
@@ -14,40 +22,11 @@ class App extends Component {
       accessToken: null
     };
   }
+
   render() {
+    console.log(this.props);
     if (!this.state.accessToken) 
-      return (
-        <div className="App">
-
-          <img src={logo} alt="logo"/>
-          <h1> Instagram photo retriever <Badge>1</Badge> </h1>
-
-          <div>
-            <Grid>
-              <Row>
-                <Col md={12}>
-                  <Panel>
-                    <Panel.Body>
-                        <Row>
-                          <Col md={12}>
-                            <a
-                              href="https://api.instagram.com/oauth/authorize/?client_id=73b2e998521244e2b98b255943b42e87&redirect_uri=https://manuhegde.in/&response_type=token">
-                              
-                              <Button bsStyle="primary"><FontAwesomeIcon icon={['fab', 'instagram']} size='2x'/>
-                                <font size="5">&nbsp;&nbsp;&nbsp;Login with Instagram</font>
-                              </Button>
-                              
-                            </a>
-                          </Col>
-                        </Row>
-                    </Panel.Body>
-                  </Panel>
-                </Col>
-              </Row>
-            </Grid>
-          </div>
-        </div>
-      );
+      return (<AppBody>Welcome to this app!</AppBody>);
     }
   }
 
