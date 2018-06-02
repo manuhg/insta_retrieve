@@ -12,6 +12,10 @@ export function setCookie(name, value, expires) {
     cookies.set(acToken, value, { path: '/', secure: true,  expires: date  });
 }
 
+export function getCookie(name)
+{
+    cookies.get('name');
+}
 export function goToLogin() {
     setCookie('hashValue', window.location.hash);
     window.location.href = '/iauth';

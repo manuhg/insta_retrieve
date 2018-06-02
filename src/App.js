@@ -16,10 +16,9 @@ import './App.css';
 import logo from './img/pickcel.png';
 import AppBody from './AppBody';
 import Pictures from './Pictures';
-import { isLoggedIn ,goToLogin, logout} from './Auth';
+import { acToken, getCookie, isLoggedIn ,goToLogin, logout} from './Auth';
 import AuthPage from './AuthPage';
 
-const cookies = new Cookies();
 function splithash(str) {
   // in case user specifies multiple hashes var
   // hashvals=window.location.hash.split('#');
@@ -33,7 +32,7 @@ function splithash(str) {
   {
     super();
     this.state = {
-      accessToken: cookies.get('ac_token')
+      accessToken: getCookie(acToken)
     };
   }
   logout()
@@ -46,10 +45,11 @@ function splithash(str) {
     goToLogin();
   }
   render() {
-    if (!this.state.accessToken) 
-      return (
-        <AppBody>Welcome to this app!</AppBody>
-      );
+    if(isLoggedIn())
+      return (<div> <AppBody><Pictures accessToken={this.state.accessToken} /> </AppBody></div>);
+    else
+      this.login();
+    
     }
   }
 
