@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import logo from './img/pickcel.png';
 import './App.css';
 import Pictures from './Pictures';
-import {Panel, Grid, Row, Col, Button} from 'react-bootstrap';
+import {Panel, Grid, Row, Col, Button, Badge} from 'react-bootstrap';
 import FontAwesomeIcon from '@fortawesome/react-fontawesome';
 import brands from '@fortawesome/fontawesome-free-brands';
 import verge from 'verge';
@@ -20,7 +20,7 @@ class App extends Component {
         <div className="App">
 
           <img src={logo} alt="logo"/>
-          <h1> Instagram photo retriever </h1>
+          <h1> Instagram photo retriever <Badge>1</Badge> </h1>
 
           <div>
             <Grid>
