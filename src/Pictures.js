@@ -27,8 +27,8 @@ class Pictures extends Component
     }
     fetchUserDetails(data)
     {
-        console.log("fetching user details..");
-       // console.log(data);
+        //console.log("fetching user details..");
+        // console.log(data);
         if(data && data.data.full_name && data.data.profile_picture)
           this.setState({user:{ name: data.data.full_name, dp: data.data.profile_picture}, data: data});
     }
@@ -45,17 +45,26 @@ class Pictures extends Component
         if (this.state.user.name===null||this.state.user.dp===null) 
         {
             this.getUserDetails();//calls an async function that changes the state
-            this.getAllMedia();
             return (<div><h3>Loading user details..</h3></div>);
         }
+      
+        
         return (
             <div>
-                {/* <h2>hash tags: {(this.props.hashvals)? this.props.hashvals.join(): ""}</h2>
-                <Button bsStyle="primary" onClick={() => this.props.clearHashTags()}>clear tags</Button> */}
                 <Panel>
                 <Grid style={{padding:'10px 0px 10px 0'}}>
                 <Row><Col md={10} mdOffset={1}><img alt="dp" className="instadp" src={this.state.user.dp}/></Col></Row>
-                <Row><Col md={10} mdOffset={1}><h1>Hi {this.state.user.name}</h1></Col></Row>
+                <Row><Col md={10} mdOffset={1}><h2>Hi {this.state.user.name}</h2></Col></Row>
+                <Row>
+                <Col md={4} mdOffset={1}><Button onClick={()=>this.getAllMedia()}>All Photos</Button></Col>
+                
+                <Col md={4} mdOffset={1}>
+                
+                {(this.props.hashvals)?<Button onClick={()=>this.getMediaByHashtag()}>Photos with {this.props.hashvals.join()}</Button>
+        : <span>&nbsp;</span>}
+        </Col>;
+
+                </Row>
                 </Grid>
                 </Panel>
             </div>

@@ -42,11 +42,11 @@ class App extends Component {
   render() {
     if(this.state.hashStr)
       Auth.setCookie(Auth.hashStr,this.state.hashStr);
-    var hashVals = Auth.getHashVal(this.state.hashStr);
+    var hashVals = Auth.getHashVal(this.state.hashStr,true);
     
     if (this.state.acTokenVal&&Auth.isLoggedIn(this.state.acTokenVal))
     {
-      window.location.hash=this.state.hashStr||"";
+      //window.location.hash=this.state.hashStr||"";
       Auth.removeCookie(Auth.hashStr);
       return (
         <AppBody onhashchange={this.onhashchange.bind(this)} logout={this.logout.bind(this)}>

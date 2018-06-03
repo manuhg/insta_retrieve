@@ -1,9 +1,9 @@
 import React from 'react';
 import {Redirect} from 'react-router-dom';
-import Cookies from 'universal-cookie';
+//import Cookies from 'universal-cookie';
 
 //const cookies = new Cookies();
-const date = new Date();
+//const date = new Date();
 
 export const auth_url = '/iauth';
 export const acToken = 'access_token';
@@ -39,6 +39,12 @@ export function setCookie(cname, cvalue, exdays) {
     document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/;";
     console.log("set cookie " + cname + "=" + cvalue);
 }
+export function removeCookie(cname) {
+    var d = new Date();
+    d.setTime(0);
+    var expires = "expires=" + d.toUTCString();
+    document.cookie = cname + "=0;" + expires + ";path=/;";
+}
 // export function setCookie(cookieName, value, expires) {
 //     const cookies = new Cookies();
 
@@ -68,11 +74,11 @@ export function setCookie(cname, cvalue, exdays) {
 //     console.log("Get cookie " + cookieName + " = " + cv);
 //     return cv;
 // }
-export function removeCookie(cookieName) {
-    const cookies = new Cookies();
+// export function removeCookie(cookieName) {
+//     const cookies = new Cookies();
 
-    cookies.remove(cookieName);
-}
+//     cookies.remove(cookieName);
+// }
 export function redirect(to) {
     if (to === undefined) 
         return (
@@ -97,7 +103,7 @@ export function isLoggedIn(acTokenval) {
         }
     return false;
 }
-export function getHashVal(hashstr) {
+export function getHashVal(hashstr,addHash) {
     if (!hashstr) 
         return null;
     
@@ -106,7 +112,10 @@ export function getHashVal(hashstr) {
     for (var i = 0; i < hashvals.length; i++) 
         if (!hashvals[i]) 
             hashvals.splice(i, 1);
-return hashvals;
+    if(addHash)
+        for ( i = 0; i < hashvals.length; i++)
+            hashvals[i]='#'+hashvals[i]; 
+    return hashvals;
 }
 export function login() {
     var hashvals = getHashVal(window.location.hash);
