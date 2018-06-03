@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {BrowserRouter as Router, Route} from "react-router-dom";
+import {BrowserRouter as Router, Route, Switch} from "react-router-dom";
 import {AuthPage} from './AuthPage';
 import {auth_url} from './Auth';
 import App from './App';
@@ -10,9 +10,11 @@ class AppRoutes extends Component
     return (
       <Router>
         <div>
-          <Route exact path="/" component={App}/>
-          <Route path={auth_url} component={AuthPage}/>
-          <Route component={AuthPage}/>
+          <Switch>
+            <Route exact path="/" component={App}/>
+            <Route path={auth_url} component={AuthPage}/>
+            <Route component={AuthPage}/>
+          </Switch>
         </div>
       </Router>
     );
