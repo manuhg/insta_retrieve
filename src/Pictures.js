@@ -1,15 +1,11 @@
 import React, { Component } from 'react';
 import './App.css';
-import AppBody from './AppBody';
 
 class Pictures extends Component 
 {
     render()
     {
-        return(
-            <div><AppBody>
-            <h2>your access token is: {this.props.accessToken}</h2></AppBody></div>
-        );
+        return(<div><h2>your access token is: {this.props.accessToken} </h2> <h2>hash string: {this.props.hashvals}</h2></div>);
     }
 }
 export default Pictures;

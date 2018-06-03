@@ -1,55 +1,49 @@
 import React, {Component} from 'react';
-import {
-  Panel,
-  Grid,
-  Row,
-  Col,
-  Button,
-  Badge
-} from 'react-bootstrap';
-import FontAwesomeIcon from '@fortawesome/react-fontawesome';
-import brands from '@fortawesome/fontawesome-free-brands';
-import {Redirect} from 'react-router-dom';
-import Cookies from 'universal-cookie';
-
 import './App.css';
-import logo from './img/pickcel.png';
 import AppBody from './AppBody';
 import Pictures from './Pictures';
-import { acToken, getCookie, isLoggedIn ,goToLogin, logout} from './Auth';
-import AuthPage from './AuthPage';
+import * as Auth from './Auth';
 
-function splithash(str) {
+function getHashVals() {
+  var hashstr = Auth.getCookie(Auth.hashStr);
   // in case user specifies multiple hashes var
-  // hashvals=window.location.hash.split('#');
-  var hashvals = str.split('#');
+  var hashvals = hashstr.split('#');
   for (var i = 0; i < hashvals.length; i++) 
     if (!hashvals[i]) 
       hashvals.splice(i, 1);
-    }
-  class App extends Component {
+return hashvals;
+}
+class App extends Component {
   constructor()
   {
     super();
-    this.state = {
-      accessToken: getCookie(acToken)
-    };
+    this.state = {loggedId: (Auth.getCookie(Auth.acToken))? true: false };
   }
   logout()
   {
-    this.setState({accessToken: null});
-    logout();
+    this.setState({loggedId: false});
+    Auth.logout();
   }
   login()
   {
-    goToLogin();
+    return Auth.goToLogin();
   }
   render() {
-    if(isLoggedIn())
-      return (<Pictures accessToken={this.state.accessToken} />);
-    else
-      this.login();
-    
+    const hashVals = getHashVals();
+    const acTokenVal = Auth.getCookie(Auth.acToken);
+    if (Auth.isLoggedIn()) 
+      return (
+        <AppBody logout={this.logout.bind(this)}>
+          <Pictures accessToken={acTokenVal} hashvals={hashVals}/>
+        </AppBody>
+      );
+    else 
+      return (
+        <AppBody>
+          <this.login/>
+        </AppBody>
+      );
+
     }
   }
 

@@ -1,7 +1,5 @@
-import React, {Component,Children} from 'react';
-import { Panel, Grid, Row, Col, Button, Badge } from 'react-bootstrap';
-import FontAwesomeIcon from '@fortawesome/react-fontawesome';
-import brands from '@fortawesome/fontawesome-free-brands';
+import React, {Component} from 'react';
+import { Panel, Grid, Row, Col, Button } from 'react-bootstrap';
 
 import logo from './img/pickcel.png';
 import './App.css';
@@ -9,10 +7,18 @@ import './App.css';
 
 class AppBody extends Component {
   render() {
-
     return (
       <div className="App">
-        <img src={logo} alt="logo"/>
+      <Grid>
+        <Row>
+          <Col md={6}>
+            <img src={logo} alt="logo"/>
+          </Col>
+          <Col md={6}> 
+          { (this.props.logout!==undefined)? <Button onClick={() =>this.props.logout()} bsStyle="primary">Logout</Button> : <span>&nbsp;</span> }
+          </Col>
+        </Row>
+        </Grid>
         <h1>
           Instagram photo retriever
         </h1>
