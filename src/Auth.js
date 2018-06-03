@@ -19,8 +19,9 @@ export function setCookie(cookieName, value, expires) {
 }
 export function getCookie(cookieName)
 {
-    console.log("Get cookie "+cookieName);
-    return cookies.get(cookieName);
+    var cv= cookies.get(cookieName);
+    console.log("Get cookie "+cookieName+" = "+cv);
+    return cv;
 }
 export function removeCookie(cookieName)
 {
