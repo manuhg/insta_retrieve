@@ -11,9 +11,7 @@ export class AuthPage extends Component
 {
     render()
     {
-        if(isLoggedIn())
-            return true;
-        if(login())
+        if(isLoggedIn()||login())
             return redirect("/");
 
         return (
