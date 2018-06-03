@@ -4,9 +4,8 @@ import AppBody from './AppBody';
 import Pictures from './Pictures';
 import * as Auth from './Auth';
 
-function getHashVals() 
+function getHashVals(hashstr) 
 {
-  var hashstr = Auth.getCookie(Auth.hashStr);
   if(!hashstr)
     return null;
   // in case user specifies multiple hashes var
@@ -32,10 +31,15 @@ class App extends Component {
     return Auth.goToLogin();
   }
   render() {
-    const hashVals = getHashVals();
-    console.log(hashVals);
     const acTokenVal = Auth.getCookie(Auth.acToken);
-    if (Auth.isLoggedIn()) 
+    var hashStr=Auth.getCookie(Auth.hashStr)||window.location.hash;
+    
+    Auth.setCookie(Auth.hashStr,hashStr);
+    var hashVals = getHashVals(hashStr);
+    
+    console.log("hashvals from app:"+hashVals+"\ntokenval:"+acTokenVal);
+    
+    if (acTokenVal) 
       return (
         <AppBody logout={this.logout.bind(this)}>
           <Pictures accessToken={acTokenVal} hashvals={hashVals}/>
