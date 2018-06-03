@@ -3,12 +3,19 @@ import {Panel,Grid,Row,Col,Button} from 'react-bootstrap';
 import {asyncrequest} from './Auth';
 
 import './App.css';
+class Image extends Component
+    {
+        render()
+        {
+        return (<Col md={3}><img src={this.props.src} alt={this.props.alt}/></Col>);
+        }
+    }
 class Pictures extends Component
 {
     constructor()
     {
         super();
-        this.state = {user: {name: null, dp: null}, data: null};
+        this.state = {user: {name: null, dp: null}, data: null,imagedata: false};
     }
     getUserDetails()
     {
@@ -35,21 +42,23 @@ class Pictures extends Component
         //console.log("fetching user details..");
         // console.log(data);
         if(data && data.data.full_name && data.data.profile_picture)
-          this.setState({user:{ name: data.data.full_name, dp: data.data.profile_picture}, data: data});
+          this.setState({user:{ name: data.data.full_name, dp: data.data.profile_picture}, data: data, imagedata: false});
     }
     fetchMediaData(data)
     {
         if(data)
         {
-            var imgdata={};
+            var imgdata=Array(data.data.length);
             for(var i=0;i<data.data.length;i++)
             {
-                imgdata[i]={src:data.data[i].link,alt: data.data[i].caption.text};
+                var alt=(data.data[i].caption)?data.data[i].caption.text:" ";
+                //imgdata[i]={src:data.data[i].link,alt: alt};
+                imgdata[i]=<Image src={data.data[i]} alt={alt}/>;
             }
             this.setState({user:this.state.user, data: imgdata, imagedata: true});
         }
     }
- 
+    
     render()
     {
         if (!this.props.accessToken) 
@@ -59,9 +68,11 @@ class Pictures extends Component
             this.getUserDetails();//calls an async function that changes the state
             return (<div><h3>Loading user details..</h3></div>);
         }
-        const Images=(this.state.imagedata && this.state.data)?
-        this.state.data.map((img)=><Col md={3}><img src={img.src} alt={img.alt}/></Col>):
-        <span></span>;
+        if(this.state.imagedata && this.state.data)
+            var Images=this.state.imgdata;
+        else
+            var Images=()=>(<Col>&nbsp;</Col>);
+        
         return (
             <div>
                 <Panel>
@@ -74,8 +85,7 @@ class Pictures extends Component
                 <Col md={3}><Button onClick={()=>this.getRecentMedia()}>Recent Photos</Button></Col>
                 <Col md={3}>
                 {(this.props.hashvals)?<Button onClick={()=>this.getMediaByHashtag()}>Photos with {this.props.hashvals.join()}</Button> : <span>&nbsp;</span>}
-                </Col>
-                </Row>
+                </Col></Row>
                 <Row>
                 <Images/>
                 </Row>
