@@ -14,9 +14,11 @@ export function setCookie(name, value, expires) {
     expires = (expires === undefined || expires < 1) ? minutes : expires;
     date.setTime(date.getTime() + (expires * 60 * 1000));
     cookies.set(acToken, value, { path: '/', secure: true,  expires: date  });
+    console.log("set cookie "+name+"="+value);
 }
 export function getCookie(name)
 {
+    console.log("Get cookie "+name);
     return cookies.get(name);
 }
 
@@ -29,6 +31,7 @@ export function redirect(to)
 
 export function goToLogin() {
     setCookie(hashStr, window.location.hash);
+    console.log("hashval:"+window.location.hash);
     return redirect(auth_url);
 }
 export function isLoggedIn()
