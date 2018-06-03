@@ -14,12 +14,16 @@ class App extends Component {
       acTokenVal:Auth.getCookie(Auth.acToken),
       hashStr:window.location.hash||Auth.getCookie(Auth.hashStr)
     };
+    if(this.state.hashStr.indexOf('#')<0)
+      this.state.hashStr=null;
+    console.log("App state obj:\n");
     console.log(this.state);
   }
   clearHashTags()
   {
     Auth.removeCookie(Auth.hashStr);
     this.setState({acTokenVal:this.state.acTokenVal,hashStr:null})
+    window.location.hash='';
   }
   logout()
   {
@@ -31,9 +35,9 @@ class App extends Component {
     return Auth.goToLogin();
   }
   render() {
-    Auth.setCookie(Auth.hashStr,this.state.hashStr);
+    if(this.state.hashStr)
+      Auth.setCookie(Auth.hashStr,this.state.hashStr);
     var hashVals = Auth.getHashVal(this.state.hashStr);
-    
     
     if (this.state.acTokenVal&&Auth.isLoggedIn(this.state.acTokenVal)) 
       return (
