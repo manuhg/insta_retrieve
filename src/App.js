@@ -18,6 +18,11 @@ class App extends Component {
       this.state.hashStr=null;
     console.log("App state obj:\n");
     console.log(this.state);
+    document.body.onhashchange=()=>this.onhashchange();
+  }
+  onhashchange()
+  {
+    this.setState({acTokenVal:this.state.acTokenVal,hashStr:window.location.hash})
   }
   clearHashTags()
   {
@@ -39,12 +44,16 @@ class App extends Component {
       Auth.setCookie(Auth.hashStr,this.state.hashStr);
     var hashVals = Auth.getHashVal(this.state.hashStr);
     
-    if (this.state.acTokenVal&&Auth.isLoggedIn(this.state.acTokenVal)) 
+    if (this.state.acTokenVal&&Auth.isLoggedIn(this.state.acTokenVal))
+    {
+      window.location.hash=this.state.hashStr||"";
+      Auth.removeCookie(Auth.hashStr);
       return (
-        <AppBody logout={this.logout.bind(this)}>
+        <AppBody onhashchange={this.onhashchange.bind(this)} logout={this.logout.bind(this)}>
           <Pictures accessToken={this.state.acTokenVal} hashvals={hashVals} clearHashTags={this.clearHashTags.bind(this)}/>
         </AppBody>
       );
+    }
     else 
       return (
         <AppBody>
