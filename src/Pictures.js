@@ -42,7 +42,7 @@ class Pictures extends Component
     {
         if (!this.props.accessToken) 
             return (<div><h3 style={{color: 'red'}}>Invalid access token</h3></div>);
-        if (!this.state.user.name||!this.state.user.dp) 
+        if (this.state.user.name===null||this.state.user.dp===null) 
         {
             this.getUserDetails();//calls an async function that changes the state
             this.getAllMedia();
@@ -54,7 +54,7 @@ class Pictures extends Component
                 <Button bsStyle="primary" onClick={() => this.props.clearHashTags()}>clear tags</Button> */}
                 <Panel>
                 <Grid style={{padding:'10px 0px 10px 0'}}>
-                <Row><Col md={10} mdOffset={1}><img className="instadp" src={this.state.user.dp}/></Col></Row>
+                <Row><Col md={10} mdOffset={1}><img alt="dp" className="instadp" src={this.state.user.dp}/></Col></Row>
                 <Row><Col md={10} mdOffset={1}><h1>Hi {this.state.user.name}</h1></Col></Row>
                 </Grid>
                 </Panel>
