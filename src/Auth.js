@@ -2,7 +2,7 @@ import React from 'react';
 import {Redirect} from 'react-router-dom';
 import Cookies from 'universal-cookie';
 
-const cookies = new Cookies();
+//const cookies = new Cookies();
 const date = new Date();
 
 export const auth_url ='/iauth';
@@ -11,6 +11,8 @@ export const acTokenValMinLen=10;
 export const hashStr='hashVals';
 
 export function setCookie(cookieName, value, expires) {
+    const cookies = new Cookies();
+
     var minutes = 60 * 24 * 7; //1 week
     expires = (expires === undefined || expires < 1) ? minutes : expires;
     date.setTime(date.getTime() + (expires * 60 * 1000));
@@ -19,12 +21,17 @@ export function setCookie(cookieName, value, expires) {
 }
 export function getCookie(cookieName)
 {
+    const cookies = new Cookies();
+
+    //return cookies.get(cookieName);
     var cv= cookies.get(cookieName);
     console.log("Get cookie "+cookieName+" = "+cv);
     return cv;
 }
 export function removeCookie(cookieName)
 {
+    const cookies = new Cookies();
+
     cookies.remove(cookieName);
 }
 export function redirect(to)
@@ -49,7 +56,7 @@ export function isLoggedIn(acTokenval)
         if(acTokenval.length()>acTokenValMinLen) 
             return true;
         else
-            cookies.remove(acToken); //if cookie has invalid value ,remove it
+            removeCookie(acToken); //if cookie has invalid value ,remove it
     }
     return false;
 }
@@ -83,6 +90,6 @@ export function login() {
 }
 
 export function logout() {
-    cookies.remove(acToken);
-    cookies.remove(hashStr);
+    removeCookie(acToken);
+    removeCookie(hashStr);
 }
