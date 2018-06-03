@@ -10,9 +10,10 @@ class AppRoutes extends Component
     return (
       <Router>
         <div>
-        <Route exact path="/" component={App} />
-        <Route path={auth_url} component={AuthPage}/>
-          </div>
+          <Route exact path="/" component={App}/>
+          <Route path={auth_url} component={AuthPage}/>
+          <Route component={AuthPage}/>
+        </div>
       </Router>
     );
   }
