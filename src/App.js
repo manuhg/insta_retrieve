@@ -4,14 +4,17 @@ import AppBody from './AppBody';
 import Pictures from './Pictures';
 import * as Auth from './Auth';
 
-function getHashVals() {
+function getHashVals() 
+{
   var hashstr = Auth.getCookie(Auth.hashStr);
+  if(!hashstr)
+    return null;
   // in case user specifies multiple hashes var
   var hashvals = hashstr.split('#');
   for (var i = 0; i < hashvals.length; i++) 
     if (!hashvals[i]) 
       hashvals.splice(i, 1);
-return hashvals;
+  return hashvals;
 }
 class App extends Component {
   constructor()
