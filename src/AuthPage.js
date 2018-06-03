@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {  Button } from 'react-bootstrap';
 import FontAwesomeIcon from '@fortawesome/react-fontawesome';
-
+import brands from '@fortawesome/fontawesome-free-brands';
 import './App.css';
 import AppBody from './AppBody';
 import { auth_url, isLoggedIn ,login, redirect} from './Auth';
