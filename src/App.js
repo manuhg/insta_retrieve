@@ -19,11 +19,11 @@ class App extends Component {
   constructor()
   {
     super();
-    this.state = {loggedId: (Auth.getCookie(Auth.acToken))? true: false };
+    this.state = {acTokenVal: (Auth.getCookie(Auth.acToken)) };
   }
   logout()
   {
-    this.setState({loggedId: false});
+    this.setState({acTokenVal: null});
     Auth.logout();
   }
   login()
@@ -31,18 +31,17 @@ class App extends Component {
     return Auth.goToLogin();
   }
   render() {
-    const acTokenVal = Auth.getCookie(Auth.acToken);
     var hashStr=Auth.getCookie(Auth.hashStr)||window.location.hash;
     
     Auth.setCookie(Auth.hashStr,hashStr);
     var hashVals = getHashVals(hashStr);
     
-    console.log("hashvals from app:"+hashVals+"\ntokenval:"+acTokenVal);
+    console.log("hashvals from app:"+hashVals+"\ntokenval:"+this.state.acTokenVal);
     
-    if (acTokenVal) 
+    if (this.state.acTokenVal) 
       return (
         <AppBody logout={this.logout.bind(this)}>
-          <Pictures accessToken={acTokenVal} hashvals={hashVals}/>
+          <Pictures accessToken={this.state.acTokenVal} hashvals={hashVals}/>
         </AppBody>
       );
     else 
