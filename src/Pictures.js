@@ -40,7 +40,14 @@ class Pictures extends Component
     fetchMediaData(data)
     {
         if(data)
-          this.setState({user:this.state.user, data: data});
+        {
+            var imgdata={};
+            for(var i=0;i<data.data.length;i++)
+            {
+                imgdata[i]={src:data.data[i].link,alt: data.data[i].caption.text};
+            }
+            this.setState({user:this.state.user, data: imgdata});
+        }
     }
  
     render()
@@ -52,8 +59,7 @@ class Pictures extends Component
             this.getUserDetails();//calls an async function that changes the state
             return (<div><h3>Loading user details..</h3></div>);
         }
-      
-        
+        const Images=this.state.imgs.map((img)=><Col md={3}><img src={img.src} alt={img.alt}/></Col>);        
         return (
             <div>
                 <Panel>
@@ -61,14 +67,15 @@ class Pictures extends Component
                 <Row><Col md={10} mdOffset={1}><img alt="dp" className="instadp" src={this.state.user.dp}/></Col></Row>
                 <Row><Col md={10} mdOffset={1}><h2>Hi {this.state.user.name}</h2></Col></Row>
                 <Row>
-                <Col md={3} mdOffset={1}><Button onClick={()=>this.getAllMedia()}>All Photos</Button></Col>
+                <Col md={3}><Button onClick={()=>this.getAllMedia()}>All Photos</Button></Col>
 
-                <Col md={3} mdOffset={1}><Button onClick={()=>this.getRecentMedia()}>Recent Photos</Button></Col>
-                
-                <Col md={3} mdOffset={1}>
+                <Col md={3}><Button onClick={()=>this.getRecentMedia()}>Recent Photos</Button></Col>
+                <Col md={3}>
                 {(this.props.hashvals)?<Button onClick={()=>this.getMediaByHashtag()}>Photos with {this.props.hashvals.join()}</Button> : <span>&nbsp;</span>}
                 </Col>
-
+                </Row>
+                <Row>
+                <Images/>
                 </Row>
                 </Grid>
                 </Panel>
