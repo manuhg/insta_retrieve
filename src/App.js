@@ -14,7 +14,7 @@ class App extends Component {
       acTokenVal:Auth.getCookie(Auth.acToken),
       hashStr:window.location.hash||Auth.getCookie(Auth.hashStr)
     };
-    if(this.state.hashStr.indexOf('#')<0)
+    if(this.state.hashStr&&this.state.hashStr.indexOf('#')<0)
       this.state.hashStr=null;
     console.log("App state obj:\n");
     console.log(this.state);
