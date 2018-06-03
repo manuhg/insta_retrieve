@@ -33,6 +33,7 @@ class App extends Component {
   }
   render() {
     const hashVals = getHashVals();
+    console.log(hashVals);
     const acTokenVal = Auth.getCookie(Auth.acToken);
     if (Auth.isLoggedIn()) 
       return (
