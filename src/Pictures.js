@@ -46,7 +46,7 @@ class Pictures extends Component
             {
                 imgdata[i]={src:data.data[i].link,alt: data.data[i].caption.text};
             }
-            this.setState({user:this.state.user, data: imgdata});
+            this.setState({user:this.state.user, data: imgdata, imagedata: true});
         }
     }
  
@@ -59,7 +59,7 @@ class Pictures extends Component
             this.getUserDetails();//calls an async function that changes the state
             return (<div><h3>Loading user details..</h3></div>);
         }
-        const Images=(this.state.data && this.state.data[0].src )?
+        const Images=(this.state.imagedata && this.state.data)?
         this.state.data.map((img)=><Col md={3}><img src={img.src} alt={img.alt}/></Col>):
         <span></span>;
         return (
