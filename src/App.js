@@ -35,7 +35,7 @@ class App extends Component {
     var hashVals = Auth.getHashVal(this.state.hashStr);
     
     
-    if (Auth.isLoggedIn(this.state.acTokenVal)) 
+    if (this.state.acTokenVal&&Auth.isLoggedIn(this.state.acTokenVal)) 
       return (
         <AppBody logout={this.logout.bind(this)}>
           <Pictures accessToken={this.state.acTokenVal} hashvals={hashVals} clearHashTags={this.clearHashTags.bind(this)}/>

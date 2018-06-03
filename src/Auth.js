@@ -40,7 +40,9 @@ export function goToLogin() {
 }
 export function isLoggedIn(acTokenval)
 {
-    acTokenval=acTokenval||getCookie(acToken);
+    //acTokenval=acTokenval||getCookie(acToken);
+    if(!acTokenval)
+        acTokenval=getCookie(acToken);
     if (acTokenval)
     {
         if(acTokenval.length()>acTokenValMinLen) 
