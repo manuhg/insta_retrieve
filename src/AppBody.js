@@ -11,31 +11,28 @@ class AppBody extends Component {
       <div className="App">
       <Grid>
         <Row>
-          <Col md={6}>
-            <img src={logo} alt="logo"/>
-          </Col>
-          <Col md={6}> 
-          { (this.props.logout!==undefined)? <Button onClick={() =>this.props.logout()} bsStyle="primary">Logout</Button> : <span>&nbsp;</span> }
+          <Col md={4}><img src={logo} alt="logo"/></Col>
+          <Col md={4}><h2>Instagram photo retriever</h2></Col>
+          <Col md={4}>
+          {(this.props.logout!==undefined)?<Button onClick={() =>this.props.logout()} 
+          bsStyle="primary">Logout</Button> : <span>&nbsp;</span> }
           </Col>
         </Row>
         </Grid>
-        <h1>
-          Instagram photo retriever
-        </h1>
-
+        
         <div>
           <Grid>
             <Row>
               <Col md={12}>
-                <Panel>
+                {/* <Panel>
                   <Grid>
                     <Row>
-                      <Col md={12}>
+                      <Col md={12}> */}
                         {this.props.children}
-                      </Col>
+                      {/* </Col>
                     </Row>
                   </Grid>
-                </Panel>
+                </Panel> */}
               </Col>
             </Row>
           </Grid>
