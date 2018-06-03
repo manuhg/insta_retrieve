@@ -15,6 +15,11 @@ class Pictures extends Component
         asyncrequest('https://api.instagram.com/v1/users/self/?access_token=' + 
          this.props.accessToken, this.fetchUserDetails.bind(this));
     }
+    getRecentMedia()
+    {
+        asyncrequest('https://api.instagram.com/v1/users/self/media/recent/?access_token=' +
+        this.props.accessToken,this.fetchMediaData.bind(this))
+    }
     getMediaByHashtag(hashtag)
     {
         asyncrequest('https://api.instagram.com/v1/tags/' + hashtag + 
@@ -56,13 +61,13 @@ class Pictures extends Component
                 <Row><Col md={10} mdOffset={1}><img alt="dp" className="instadp" src={this.state.user.dp}/></Col></Row>
                 <Row><Col md={10} mdOffset={1}><h2>Hi {this.state.user.name}</h2></Col></Row>
                 <Row>
-                <Col md={4} mdOffset={1}><Button onClick={()=>this.getAllMedia()}>All Photos</Button></Col>
+                <Col md={3} mdOffset={1}><Button onClick={()=>this.getAllMedia()}>All Photos</Button></Col>
+
+                <Col md={3} mdOffset={1}><Button onClick={()=>this.getRecentMedia()}>Recent Photos</Button></Col>
                 
-                <Col md={4} mdOffset={1}>
-                
-                {(this.props.hashvals)?<Button onClick={()=>this.getMediaByHashtag()}>Photos with {this.props.hashvals.join()}</Button>
-        : <span>&nbsp;</span>}
-        </Col>;
+                <Col md={3} mdOffset={1}>
+                {(this.props.hashvals)?<Button onClick={()=>this.getMediaByHashtag()}>Photos with {this.props.hashvals.join()}</Button> : <span>&nbsp;</span>}
+                </Col>
 
                 </Row>
                 </Grid>
