@@ -10,3 +10,8 @@
   border-radius: 50%;
   width: 100px;
 }
+.usermedia
+{
+  min-width: 200px;
+  padding: 5px 5px 5px 5px;
+}

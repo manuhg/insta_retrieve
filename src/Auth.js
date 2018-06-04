@@ -133,11 +133,11 @@ export function login() {
     return false;
 }
 
-export function asyncrequest(url, func) {
+export function asyncrequest(url, func,echo) {
     var xhtr = new XMLHttpRequest();
     xhtr.onreadystatechange = function () {
         if (this.readyState === 4 && this.status === 200) {
-            console.log(this.responseText);
+            if(echo) console.log(this.responseText);
             var data = JSON.parse(this.responseText);
             func(data);
         }

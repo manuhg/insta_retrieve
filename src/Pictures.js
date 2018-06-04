@@ -3,13 +3,12 @@ import {Panel,Grid,Row,Col,Button} from 'react-bootstrap';
 import {asyncrequest} from './Auth';
 
 import './App.css';
-class Image extends Component
-    {
-        render()
-        {
-        return (<Col md={3}><img src={this.props.src} alt={this.props.alt}/></Col>);
-        }
-    }
+
+function Image(props)
+{
+    return (<Col className="usermedia" md={3}><img src={props.src} alt={props.alt}/></Col>);
+}
+
 class Pictures extends Component
 {
     constructor()
@@ -48,12 +47,11 @@ class Pictures extends Component
     {
         if(data)
         {
-            var imgdata=Array(data.data.length);
+            var imgdata={};
             for(var i=0;i<data.data.length;i++)
             {
                 var alt=(data.data[i].caption)?data.data[i].caption.text:" ";
-                //imgdata[i]={src:data.data[i].link,alt: alt};
-                imgdata[i]=<Image src={data.data[i]} alt={alt}/>;
+                imgdata[i]={src:data.data[i].link,alt: alt};
             }
             this.setState({user:this.state.user, data: imgdata, imagedata: true});
         }
@@ -68,11 +66,20 @@ class Pictures extends Component
             this.getUserDetails();//calls an async function that changes the state
             return (<div><h3>Loading user details..</h3></div>);
         }
+        var Images=()=>(<Row><Col>&nbsp;</Col></Row>);
         if(this.state.imagedata && this.state.data)
-            var Images=this.state.imgdata;
-        else
-            var Images=()=>(<Col>&nbsp;</Col>);
-        
+        {
+            var Imglist=[];
+            
+            for(var i in this.state.data)
+            {
+                console.log(this.state.data[i].src,this.state.data[i].alt);
+                Imglist.push(<Image key={i} src={this.state.data[i].src} alt={this.state.data[i].alt}/>);
+            }
+            if(Imglist && Imglist.length>0)
+                Images=()=><Row>{Imglist}</Row>
+        }
+        console.log(Images);
         return (
             <div>
                 <Panel>
@@ -86,9 +93,7 @@ class Pictures extends Component
                 <Col md={3}>
                 {(this.props.hashvals)?<Button onClick={()=>this.getMediaByHashtag()}>Photos with {this.props.hashvals.join()}</Button> : <span>&nbsp;</span>}
                 </Col></Row>
-                <Row>
                 <Images/>
-                </Row>
                 </Grid>
                 </Panel>
             </div>
