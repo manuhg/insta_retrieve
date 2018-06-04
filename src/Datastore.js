@@ -2,17 +2,18 @@ import { asyncrequest, acTokenValMinLen } from './Auth';
 import { computed, observable } from 'mobx';
 
 class User{
-    @observable name
-    @observable dp
+    @observable name =null;
+    @observable dp =null;
     constructor(acTokenVal)
     {
         this.waiting=false;
         if(!acTokenVal)
             this.getUserDetails();
     }
-    isLoggedIn()
+    isLoggedIn(sync)
     {
-        while(this.waiting);
+        if(sync)
+            while(this.waiting);
         return (this.name && this.dp);
     }
     getUserDetails()
@@ -85,9 +86,9 @@ export default class Datastore
         return userStatus();
     }
 
-    isLoggedIn()
+    isLoggedIn(sync)
     {
-        if(this.user&&this.user.isLoggedIn())
+        if(this.user&&this.user.isLoggedIn(sync))
             return true;
         return false;
     }

@@ -5,8 +5,8 @@ import Pictures from './Pictures';
 import * as Auth from './Auth';
 import { observer } from "mobx-react";
 
-@observer
 @inject("store")
+@observer
 class App extends Component 
 {
   constructor() 

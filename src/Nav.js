@@ -7,8 +7,8 @@ import { BrowserRouter as Router } from 'react-router-dom';
 import logo from './img/pickcel.png';
 import './App.css';
 
-@observer
 @inject("store")
+@observer
 class NavBarMD extends Component {
     constructor(props) {
         super(props);
