@@ -106,15 +106,20 @@ export function isLoggedIn(acTokenval) {
 export function getHashVal(hashstr,addHash) {
     if (!hashstr) 
         return null;
-    
+    if(addHash==undefined)
+        addHash=true;
     // in case user specifies multiple hashes
     var hashvals = hashstr.split('#');
     for (var i = 0; i < hashvals.length; i++) 
         if (!hashvals[i]) 
             hashvals.splice(i, 1);
-    if(addHash)
-        for ( i = 0; i < hashvals.length; i++)
+    for ( i = 0; i < hashvals.length; i++)
+    {
+        hashvals[i]=hashvals[i].trim();
+        hashvals[i]=hashvals[i].replace(/,\s*$/,"");
+        if(addHash)
             hashvals[i]='#'+hashvals[i]; 
+    }
     return hashvals;
 }
 export function login() {

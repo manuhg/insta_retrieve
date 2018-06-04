@@ -1,15 +1,32 @@
 import React, {Component} from 'react';
-import {Panel,Grid,Row,Col,Button} from 'react-bootstrap';
+import {
+    Modal,
+    Well,
+    Panel,
+    Grid,
+    Row,
+    Col,
+    Button,
+    Thumbnail,
+    Tabs
+} from 'react-bootstrap';
 import {asyncrequest} from './Auth';
-
+import HashTagModal from './HashTagModal';
 import './App.css';
 
-function Image(props)
-{
-    return (<Col className="usermedia" md={3}>
-    <a href={props.src.standard_resolution.url}>
-    <img src={props.src.thumbnail.url} alt={props.alt}/>
-    </a></Col>);
+
+function Image(props) {
+    var data=props.data;
+    if(!data) return(<Col></Col>);
+    console.log(data);
+    return (
+        <Col className="imgCol" md={3}>
+            
+                <Thumbnail className="imgThumb" responsive href={data.img.standard_resolution.url} src={data.img.standard_resolution.url} alt={data.alt}>
+                <div className="infodiv"><h4>{data.alt}</h4><a href={data.link}> <p style={{color:'blue'}}>{data.tags}</p></a></div>
+                 </Thumbnail>
+        </Col>
+    );
 }
 
 class Pictures extends Component
@@ -17,86 +34,125 @@ class Pictures extends Component
     constructor()
     {
         super();
-        this.state = {user: {name: null, dp: null}, data: null,imagedata: false};
+        this.state = {
+            user: {
+                name: null,
+                dp: null
+            },
+            data: null,
+            imagedata: false
+        };
+        this.HashtagsSpecified=false;
     }
     getUserDetails()
     {
-        asyncrequest('https://api.instagram.com/v1/users/self/?access_token=' + 
-         this.props.accessToken, this.fetchUserDetails.bind(this));
+        asyncrequest('https://api.instagram.com/v1/users/self/?access_token=' + this.props.accessToken, this.fetchUserDetails.bind(this));
     }
     getRecentMedia()
     {
-        asyncrequest('https://api.instagram.com/v1/users/self/media/recent/?access_token=' +
-        this.props.accessToken,this.fetchMediaData.bind(this))
+        asyncrequest('https://api.instagram.com/v1/users/self/media/recent/?access_token=' + this.props.accessToken, this.fetchRecentMedia.bind(this))
     }
     getMediaByHashtag(hashtag)
     {
-        asyncrequest('https://api.instagram.com/v1/tags/' + hashtag + 
-        '/media/recent?access_token=' + this.props.accessToken, this.fetchMediaData.bind(this));
+        asyncrequest('https://api.instagram.com/v1/tags/' + hashtag + '/media/recent?access_token=' + this.props.accessToken, this.fetchMediaData.bind(this));
     }
     getAllMedia()
     {
-        asyncrequest('https://api.instagram.com/v1/tags/nofilter/media/recent?access_token=' +
-        this.props.accessToken,this.fetchMediaData.bind(this))
+        asyncrequest('https://api.instagram.com/v1/tags/nofilter/media/recent?access_token=' + this.props.accessToken, this.fetchMediaData.bind(this))
     }
     fetchUserDetails(data)
     {
-        if(data && data.data.full_name && data.data.profile_picture)
-          this.setState({user:{ name: data.data.full_name, dp: data.data.profile_picture}, data: data, imagedata: false});
-    }
+        if (data && data.data.full_name && data.data.profile_picture) 
+            this.setState({
+                user: {
+                    name: data.data.full_name,
+                    dp: data.data.profile_picture
+                },
+                data: data,
+                imagedata: false
+            });
+        }
     fetchMediaData(data)
     {
-        if(data)
-        {
-            var imgdata={};console.log(data);
-            for(var i=0;i<data.data.length;i++)
-            {
-                var alt=(data.data[i].caption)?data.data[i].caption.text:" ";
-                imgdata[i]={src:data.data[i].images,alt: alt};
+        if (data)
+            this.setState({user: this.state.user, data: data, imagedata: true});
+    }
+    fetchRecentMedia(data)
+    {
+        
+        if (data) {
+            var imgdata = {};
+            for (var i = 0; i < data.data.length; i++) {
+                var alt = (data.data[i].caption)
+                    ? data.data[i].caption.text
+                    : " ";
+                imgdata[i] = {
+                    img: data.data[i].images,
+                    alt: alt,
+                    link:data.data[i].link,
+                    tags:data.data[i].tags
+                };
             }
-            this.setState({user:this.state.user, data: imgdata, imagedata: true});
+            this.setState({user: this.state.user, data: imgdata, imagedata: true});
         }
     }
-    
+    getMediaByHashtags()
+    {
+        if(!this.HashtagsSpecified)
+        ;//modal
+        //for
+
+    }
     render()
     {
+        if(this.props.hashvals && this.props.hashvals.length>1)
+            this.HashtagsSpecified=true;
         if (!this.props.accessToken) 
-            return (<div><h3 style={{color: 'red'}}>Invalid access token</h3></div>);
-        if (this.state.user.name===null||this.state.user.dp===null) 
-        {
-            this.getUserDetails();//calls an async function that changes the state
-            return (<div><h3>Loading user details..</h3></div>);
+            return (
+                <div>
+                    <h3 style={{
+                        color: 'red'
+                    }}>Invalid access token</h3>
+                </div>
+            );
+        if (this.state.user.name === null || this.state.user.dp === null) {
+            this.getUserDetails(); //calls an async function that changes the state
+            return (
+                <div>
+                    <h3>Loading user details..</h3>
+                </div>
+            );
         }
-        var Images=()=>(<Row><Col>&nbsp;</Col></Row>);
-        if(this.state.imagedata && this.state.data)
-        {
-            var Imglist=[];
-            
-            for(var i in this.state.data)
-            {
-                Imglist.push(<Image key={i} src={this.state.data[i].src} alt={this.state.data[i].alt}/>);
+        var Images = () => (
+            <Row>
+                <Col>&nbsp;</Col>
+            </Row>
+        );
+        if (this.state.imagedata && this.state.data) {
+            var Imglist = [];
+            for (var i in this.state.data) {
+                Imglist.push(<Image key={i} data={this.state.data[i]}/>);
             }
-            if(Imglist && Imglist.length>0)
-                Images=()=><Row>{Imglist}</Row>
-        }
+            if (Imglist && Imglist.length > 0) 
+                Images = () =><Row><Col md={10} mdOffset={1}><Row>{Imglist}</Row></Col></Row>;
+            }
         return (
             <div>
                 <Panel>
                 <Grid style={{padding:'10px 0px 10px 0'}}>
-                <Row><Col md={10} mdOffset={1}><img alt="dp" className="instadp" src={this.state.user.dp}/></Col></Row>
+                <Row><Col md={10} mdOffset={1}><img alt="dp" className="instadp" src={this.state.user.dp} /> </Col></Row>
                 <Row><Col md={10} mdOffset={1}><h2>Hi {this.state.user.name}</h2></Col></Row>
                 <Row>
-                <Col md={3}><Button onClick={()=>this.getAllMedia()}>All Photos</Button></Col>
-
-                <Col md={3}><Button onClick={()=>this.getRecentMedia()}>Recent Photos</Button></Col>
-                <Col md={3}>
-                {(this.props.hashvals)?<Button onClick={()=>this.getMediaByHashtag()}>Photos with {this.props.hashvals.join()}</Button> : <span>&nbsp;</span>}
-                </Col></Row>
+                <Col md={4}><Button onClick={()=>this.getAllMedia()}>All Photos</Button> </Col>
+                <Col md ={4} > <Button onClick={() => this.getRecentMedia()}>Recent Photos</Button></Col>
+                <Col md={4}>{(this.props.hashvals)?<Button onClick={()=>this.getMediaByHashtags()}>Photos with {this.props.hashvals.join()}</Button> 
+                :  <HashTagModal/>}</Col>
+                </Row>
                 <Images/>
-                </Grid>
+                 </Grid>
                 </Panel>
-            </div>
-        );
+               
+            </div>);
     }
 }
 export default Pictures;
