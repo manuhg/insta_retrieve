@@ -1,5 +1,5 @@
 import React from 'react';
-import {Redirect} from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
 //import Cookies from 'universal-cookie';
 
 //const cookies = new Cookies();
@@ -10,6 +10,51 @@ export const acToken = 'access_token';
 export const acTokenValMinLen = 10;
 export const hashStr = 'hashVals';
 
+export function redirect(to) {
+    if (to === undefined) 
+        return (
+            <div></div>
+        );
+    return (<Redirect to={to}/>);
+}
+
+
+export function login() {
+    var hashvals = getHashVal(window.location.hash);
+    if (hashvals) {
+        for (var i = 0; i < hashvals.length; i++) {
+            let [cookieName,
+                acTokenval] = hashvals[i].split('=');
+            if (cookieName === acToken && acTokenval.length > acTokenValMinLen) {
+                console.log("Access token found\nSetting Cookie\nName:" + acToken + "\nValue" + acTokenval);
+                setCookie(acToken, acTokenval);
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
+export function logout() {
+    removeCookie(acToken);
+    removeCookie(hashStr);
+}
+export function asyncrequest(url, func,echo) {
+    var xhtr = new XMLHttpRequest();
+    xhtr.onreadystatechange = function () {
+        if (this.readyState === 4 && this.status === 200) {
+            if(echo) console.log(this.responseText);
+            var data = JSON.parse(this.responseText);
+            func(data);
+        }
+    };
+    console.log("GET "+url);
+    xhtr.open("GET", url, true);
+    xhtr.send();
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////cookie fucntions. faced some strange error with universal cookie////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 export function getCookie(cname) {
     var name = cname + "=";
     var decodedCookie = decodeURIComponent(document.cookie);
@@ -45,53 +90,16 @@ export function removeCookie(cname) {
     var expires = "expires=" + d.toUTCString();
     document.cookie = cname + "=0;" + expires + ";path=/;";
 }
-// export function setCookie(cookieName, value, expires) {
-//     const cookies = new Cookies();
-
-//     var minutes = 60 * 24 * 7; //1 week
-//     expires = (expires === undefined || expires < 1)
-//         ? minutes
-//         : expires;
-//     date.setTime(date.getTime() + (expires * 60 * 1000));
-//     cookies.set(acToken, value, {
-//         path: '/',
-//         secure: true,
-//         expires: date
-//     });
-//     cookies.set(acToken + "1", value, {
-//         path: '/',
-//         secure: true,
-//         expires: date
-//     });
-
-//     console.log("set cookie " + cookieName + "=" + value);
-// }
-// export function getCookie(cookieName) {
-//     const cookies = new Cookies();
-
-//     //return cookies.get(cookieName);
-//     var cv = cookies.get(cookieName);
-//     console.log("Get cookie " + cookieName + " = " + cv);
-//     return cv;
-// }
-// export function removeCookie(cookieName) {
-//     const cookies = new Cookies();
-
-//     cookies.remove(cookieName);
-// }
-export function redirect(to) {
-    if (to === undefined) 
-        return (
-            <div></div>
-        );
-    return (<Redirect to={to}/>);
-}
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////not used anymore///////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 export function goToLogin() {
     if(window.location.hash)
         setCookie(hashStr, window.location.hash);
     return redirect(auth_url);
 }
+
 export function isLoggedIn(acTokenval) {
     //acTokenval=acTokenval||getCookie(acToken);
     if (!acTokenval) 
@@ -121,37 +129,4 @@ export function getHashVal(hashstr,addHash) {
             hashvals[i]='#'+hashvals[i]; 
     }
     return hashvals;
-}
-export function login() {
-    var hashvals = getHashVal(window.location.hash);
-    if (hashvals) {
-        for (var i = 0; i < hashvals.length; i++) {
-            let [cookieName,
-                acTokenval] = hashvals[i].split('=');
-            if (cookieName === acToken && acTokenval.length > acTokenValMinLen) {
-                console.log("Access token found\nLogging in\nSetting Cookie\nName:" + acToken + "\nValue" + acTokenval);
-                setCookie(acToken, acTokenval);
-                return true;
-            }
-        }
-    }
-    return false;
-}
-
-export function asyncrequest(url, func,echo) {
-    var xhtr = new XMLHttpRequest();
-    xhtr.onreadystatechange = function () {
-        if (this.readyState === 4 && this.status === 200) {
-            if(echo) console.log(this.responseText);
-            var data = JSON.parse(this.responseText);
-            func(data);
-        }
-    };
-    console.log("GET "+url);
-    xhtr.open("GET", url, true);
-    xhtr.send();
-}
-export function logout() {
-    removeCookie(acToken);
-    removeCookie(hashStr);
 }

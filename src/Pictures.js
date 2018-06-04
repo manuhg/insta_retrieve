@@ -1,19 +1,8 @@
-import React, {Component} from 'react';
-import {
-    Modal,
-    Well,
-    Panel,
-    Grid,
-    Row,
-    Col,
-    Button,
-    Thumbnail,
-    Tabs
-} from 'react-bootstrap';
-import {asyncrequest} from './Auth';
+import React, { Component } from 'react';
+import { Modal, Well, Panel, Grid, Row, Col, Button, Thumbnail, Tabs, Tab } from 'react-bootstrap';
+import { asyncrequest } from './Auth';
 import HashTagModal from './HashTagModal';
 import './App.css';
-
 
 function Image(props) {
     var data=props.data;
@@ -23,12 +12,14 @@ function Image(props) {
         <Col className="imgCol" md={3}>
             
                 <Thumbnail className="imgThumb" responsive href={data.img.standard_resolution.url} src={data.img.standard_resolution.url} alt={data.alt}>
-                <div className="infodiv"><h4>{data.alt}</h4><a href={data.link}> <p style={{color:'blue'}}>{data.tags}</p></a></div>
+                <div className="infodiv"><h5>{data.alt}</h5><a href={data.link}> <p style={{color:'blue'}}>{data.tags}</p></a></div>
                  </Thumbnail>
         </Col>
     );
 }
 
+@observer
+@inject("store")
 class Pictures extends Component
 {
     constructor()
@@ -44,10 +35,6 @@ class Pictures extends Component
         };
         this.HashtagsSpecified=false;
     }
-    getUserDetails()
-    {
-        asyncrequest('https://api.instagram.com/v1/users/self/?access_token=' + this.props.accessToken, this.fetchUserDetails.bind(this));
-    }
     getRecentMedia()
     {
         asyncrequest('https://api.instagram.com/v1/users/self/media/recent/?access_token=' + this.props.accessToken, this.fetchRecentMedia.bind(this))
@@ -60,18 +47,7 @@ class Pictures extends Component
     {
         asyncrequest('https://api.instagram.com/v1/tags/nofilter/media/recent?access_token=' + this.props.accessToken, this.fetchMediaData.bind(this))
     }
-    fetchUserDetails(data)
-    {
-        if (data && data.data.full_name && data.data.profile_picture) 
-            this.setState({
-                user: {
-                    name: data.data.full_name,
-                    dp: data.data.profile_picture
-                },
-                data: data,
-                imagedata: false
-            });
-        }
+  
     fetchMediaData(data)
     {
         if (data)
@@ -103,6 +79,10 @@ class Pictures extends Component
         //for
 
     }
+    clearHashTags()
+    {
+      window.location.hash='';
+    }
     render()
     {
         if(this.props.hashvals && this.props.hashvals.length>1)
@@ -115,14 +95,14 @@ class Pictures extends Component
                     }}>Invalid access token</h3>
                 </div>
             );
-        if (this.state.user.name === null || this.state.user.dp === null) {
-            this.getUserDetails(); //calls an async function that changes the state
-            return (
-                <div>
-                    <h3>Loading user details..</h3>
-                </div>
-            );
-        }
+        // if (this.state.user.name === null || this.state.user.dp === null) {
+        //     this.getUserDetails(); //calls an async function that changes the state
+        //     return (
+        //         <div>
+        //             <h3>Loading user details..</h3>
+        //         </div>
+        //     );
+        // }
         var Images = () => (
             <Row>
                 <Col>&nbsp;</Col>
@@ -137,11 +117,12 @@ class Pictures extends Component
                 Images = () =><Row><Col md={10} mdOffset={1}><Row>{Imglist}</Row></Col></Row>;
             }
         return (
-            <div>
+            <div><NavBarMD logout={this.props.logout} />
                 <Panel>
                 <Grid style={{padding:'10px 0px 10px 0'}}>
                 <Row><Col md={10} mdOffset={1}><img alt="dp" className="instadp" src={this.state.user.dp} /> </Col></Row>
                 <Row><Col md={10} mdOffset={1}><h2>Hi {this.state.user.name}</h2></Col></Row>
+                
                 <Row>
                 <Col md={4}><Button onClick={()=>this.getAllMedia()}>All Photos</Button> </Col>
                 <Col md ={4} > <Button onClick={() => this.getRecentMedia()}>Recent Photos</Button></Col>
@@ -149,6 +130,13 @@ class Pictures extends Component
                 :  <HashTagModal/>}</Col>
                 </Row>
                 <Images/>
+
+                {/* <Tabs defaultActiveKey={1} id="Imagdatatab">
+                <Tab eventKey={1} title="Recent Photos">        </Tab>
+                <Tab eventKey={2} title="All Photos">        </Tab>
+                <Tab eventKey={3} title="Photos with hashtags">        </Tab>
+                </Tabs> */}
+
                  </Grid>
                 </Panel>
                

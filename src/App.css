@@ -1,27 +1,27 @@
 .App {
   text-align: center;
-  background-color:#fff;
-  color:#222;
-  font-size:80%;
-  padding:10px;
+  background-color: #fff;
+  color: #222;
+  font-size: 80%;
+  padding: 10px;
 }
-.instadp
-{
+
+.instadp {
   border-radius: 50%;
   width: 100px;
 }
-.imgCol
-{
+
+.imgCol {
   /* padding: 5px 5px 5px 5px;
   background-color: #222; */
   /* border:1px solid #222; */
 }
-.imgThumb
-{
+
+.imgThumb {
   /* background-color: #222; */
-  color:white !important;
+  color: white !important;
 }
-.infodiv
-{
-  height:50px;
+
+.infodiv {
+  height: 50px;
 }

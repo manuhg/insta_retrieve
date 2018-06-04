@@ -1,67 +1,55 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import './App.css';
 import AppBody from './AppBody';
 import Pictures from './Pictures';
 import * as Auth from './Auth';
+import { observer } from "mobx-react";
 
-
-class App extends Component {
-  constructor()
+@observer
+@inject("store")
+class App extends Component 
+{
+  constructor() 
   {
-    super();
-    this.state = 
-    {
-      acTokenVal:Auth.getCookie(Auth.acToken),
-      hashStr:window.location.hash||Auth.getCookie(Auth.hashStr)
-    };
-    if(this.state.hashStr&&this.state.hashStr.indexOf('#')<0)
-      this.state.hashStr=null;
-    console.log("App state obj:\n");
-    console.log(this.state);
-    document.body.onhashchange=()=>this.onhashchange();
+    this.props.store.logout=this.logout.bind(this);
+    this.props.store.setacessToken(Auth.getCookie(Auth.acToken));
+    this.props.store.hashStr = window.location.hash || Auth.getCookie(Auth.hashStr);
+    document.body.onhashchange = this.onhashchange.bind(this);
+    this.state={loggedIn:this.props.store.isLoggedIn()};
   }
   onhashchange()
   {
-    this.setState({acTokenVal:this.state.acTokenVal,hashStr:window.location.hash})
+    this.props.store.hashStr=window.location.hash;
   }
-  clearHashTags()
-  {
-    Auth.removeCookie(Auth.hashStr);
-    this.setState({acTokenVal:this.state.acTokenVal,hashStr:null})
-    window.location.hash='';
-  }
+
   logout()
   {
-    this.setState({acTokenVal: null,hashStr:null});
+    this.props.store.setacessToken(null);
     Auth.logout();
+    this.setState({loggedIn:false});
   }
   login()
   {
-    return Auth.goToLogin();
+    return Auth.redirect(Auth.auth_url);
   }
-  render() {
-    if(this.state.hashStr)
-      Auth.setCookie(Auth.hashStr,this.state.hashStr);
-    var hashVals = Auth.getHashVal(this.state.hashStr,true);
-    
-    if (this.state.acTokenVal&&Auth.isLoggedIn(this.state.acTokenVal))
-    {
-      //window.location.hash=this.state.hashStr||"";
+  render() 
+  {
+    Auth.setCookie(Auth.hashStr, this.props.store.hashStr);
+    if (this.props.store.isLoggedIn()) {
+      this.props.store.hashStr = Auth.getCookie(Auth.hashStr);
       Auth.removeCookie(Auth.hashStr);
-      return (
-        <AppBody onhashchange={this.onhashchange.bind(this)} logout={this.logout.bind(this)}>
-          <Pictures accessToken={this.state.acTokenVal} hashvals={hashVals} clearHashTags={this.clearHashTags.bind(this)}/>
+      return
+      (
+        <AppBody logout={this.logout.bind(this)}>
+          <Pictures />
         </AppBody>
       );
     }
-    else 
-      return (
-        <AppBody>
-          <this.login/>
-        </AppBody>
-      );
+    else {
+      return (<AppBody><this.login /></AppBody>);
+    }
 
-    }
   }
+}
 
 export default App;

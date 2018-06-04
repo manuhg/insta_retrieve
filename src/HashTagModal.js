@@ -1,17 +1,21 @@
 import React, { Component } from 'react';
-import { Tooltip, Popover, Modal, Button ,ControlLabel,FormGroup,FormControl,HelpBlock } from 'react-bootstrap';
-import {getHashVal} from './Auth';
+import { Tooltip, Popover, Modal, Button, ControlLabel, FormGroup, FormControl, HelpBlock } from 'react-bootstrap';
+import { getHashVal } from './Auth';
 
 class HastagInput extends Component {
     constructor(props) {
       super(props);
       this.handleChange = this.handleChange.bind(this);
+      this.sethashstr=this.sethashstr.bind(this);
       this.hashstr='';
       this.state = {
         value: ''
       };
     }
-  
+    sethashstr()
+    {
+      this.props.sethashstr(this.hashstr);
+    }  
     getValidationState() {
       this.hashvals = getHashVal(this.state.value);
       if(this.hashvals)
@@ -19,7 +23,7 @@ class HastagInput extends Component {
           this.hashstr=this.hashvals.join();
           this.hvLength =0 ||this.hashvals.length;
       }
-      this.props.sethashstr(this.hashstr)
+      //this.props.sethashstr(this.hashstr)
       if (this.hvLength > 1) return 'success';
       else return 'warning';
       //else  return 'error';
@@ -43,6 +47,7 @@ class HastagInput extends Component {
               value={this.state.value}
               placeholder="Enter hashtags"
               onChange={this.handleChange}
+              onKeyPress={this.sethashstr}
             />
             <FormControl.Feedback />
             <HelpBlock>{this.hashstr}&nbsp;Number of hastags:&nbsp;{this.hvLength}</HelpBlock>
