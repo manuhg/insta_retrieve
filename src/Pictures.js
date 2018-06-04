@@ -6,7 +6,10 @@ import './App.css';
 
 function Image(props)
 {
-    return (<Col className="usermedia" md={3}><img src={props.src} alt={props.alt}/></Col>);
+    return (<Col className="usermedia" md={3}>
+    <a href={props.src.standard_resolution.url}>
+    <img src={props.src.thumbnail.url} alt={props.alt}/>
+    </a></Col>);
 }
 
 class Pictures extends Component
@@ -38,8 +41,6 @@ class Pictures extends Component
     }
     fetchUserDetails(data)
     {
-        //console.log("fetching user details..");
-        // console.log(data);
         if(data && data.data.full_name && data.data.profile_picture)
           this.setState({user:{ name: data.data.full_name, dp: data.data.profile_picture}, data: data, imagedata: false});
     }
@@ -47,11 +48,11 @@ class Pictures extends Component
     {
         if(data)
         {
-            var imgdata={};
+            var imgdata={};console.log(data);
             for(var i=0;i<data.data.length;i++)
             {
                 var alt=(data.data[i].caption)?data.data[i].caption.text:" ";
-                imgdata[i]={src:data.data[i].link,alt: alt};
+                imgdata[i]={src:data.data[i].images,alt: alt};
             }
             this.setState({user:this.state.user, data: imgdata, imagedata: true});
         }
@@ -73,13 +74,11 @@ class Pictures extends Component
             
             for(var i in this.state.data)
             {
-                console.log(this.state.data[i].src,this.state.data[i].alt);
                 Imglist.push(<Image key={i} src={this.state.data[i].src} alt={this.state.data[i].alt}/>);
             }
             if(Imglist && Imglist.length>0)
                 Images=()=><Row>{Imglist}</Row>
         }
-        console.log(Images);
         return (
             <div>
                 <Panel>
