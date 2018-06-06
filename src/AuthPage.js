@@ -4,11 +4,13 @@ import FontAwesomeIcon from '@fortawesome/react-fontawesome';
 import brands from '@fortawesome/fontawesome-free-brands';
 import './App.css';
 import AppBody from './AppBody';
-import { auth_url, isLoggedIn, login, redirect, asyncrequest, getCookie, acToken } from './Auth';
+import { auth_url, login, redirect, getCookie, acToken } from './Auth';
+import { observer , inject } from "mobx-react";
+
 
 @inject("store")
 @observer
-export class AuthPage extends Component
+class AuthPage extends Component
 {
     render()
     {
@@ -36,3 +38,4 @@ export class AuthPage extends Component
         );
     }
 }
+export default AuthPage;

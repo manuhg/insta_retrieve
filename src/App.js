@@ -3,14 +3,15 @@ import './App.css';
 import AppBody from './AppBody';
 import Pictures from './Pictures';
 import * as Auth from './Auth';
-import { observer } from "mobx-react";
+import { observer , inject } from "mobx-react";
 
-@inject("store")
-@observer
+
 class App extends Component 
 {
   constructor() 
   {
+    super();
+    console.log(this.props);
     this.props.store.logout=this.logout.bind(this);
     this.props.store.setacessToken(Auth.getCookie(Auth.acToken));
     this.props.store.hashStr = window.location.hash || Auth.getCookie(Auth.hashStr);
@@ -32,24 +33,16 @@ class App extends Component
   {
     return Auth.redirect(Auth.auth_url);
   }
-  render() 
-  {
+  render() {
     Auth.setCookie(Auth.hashStr, this.props.store.hashStr);
-    if (this.props.store.isLoggedIn()) {
+    if (this.props.store.user && this.props.store.isLoggedIn()) {
       this.props.store.hashStr = Auth.getCookie(Auth.hashStr);
       Auth.removeCookie(Auth.hashStr);
-      return
-      (
-        <AppBody logout={this.logout.bind(this)}>
-          <Pictures />
-        </AppBody>
-      );
+      return(<AppBody> <Pictures/></AppBody>);
     }
-    else {
+    else
       return (<AppBody><this.login /></AppBody>);
-    }
-
   }
 }
 
-export default App;
+export default inject('store')(observer(App));

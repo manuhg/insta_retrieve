@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Tooltip, Popover, Modal, Button, ControlLabel, FormGroup, FormControl, HelpBlock } from 'react-bootstrap';
+import { Modal, Button, ControlLabel, FormGroup, FormControl, HelpBlock } from 'react-bootstrap';
 import { getHashVal } from './Auth';
 
 class HastagInput extends Component {
@@ -27,7 +27,6 @@ class HastagInput extends Component {
       if (this.hvLength > 1) return 'success';
       else return 'warning';
       //else  return 'error';
-      return null;
     }
   
     handleChange(e) {
@@ -87,13 +86,6 @@ class HashTagModal extends Component {
         window.location.hash=this.hashstr;
   }
   render() {
-    const popover = (
-      <Popover id="modal-popover" title="popover">
-        very popover. such engagement
-      </Popover>
-    );
-    const tooltip = <Tooltip id="modal-tooltip">wow.</Tooltip>;
-
     return (
       <div>
 

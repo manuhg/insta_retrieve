@@ -114,7 +114,7 @@ export function isLoggedIn(acTokenval) {
 export function getHashVal(hashstr,addHash) {
     if (!hashstr) 
         return null;
-    if(addHash==undefined)
+    if(addHash===undefined)
         addHash=true;
     // in case user specifies multiple hashes
     var hashvals = hashstr.split('#');

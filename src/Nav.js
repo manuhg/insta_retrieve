@@ -2,10 +2,11 @@ import React, { Component } from 'react';
 import FontAwesomeIcon from '@fortawesome/react-fontawesome';
 import solids from '@fortawesome/fontawesome-free-solid';
 import { Image } from 'react-bootstrap';
-import { Navbar, Button, Container, NavbarBrand, NavbarNav, NavbarToggler, Collapse, NavItem, NavLink, Dropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'mdbreact';
-import { BrowserRouter as Router } from 'react-router-dom';
+import { Navbar, Button, Container, NavbarBrand, NavbarNav, NavbarToggler, Collapse, NavItem, NavLink } from 'mdbreact';
 import logo from './img/pickcel.png';
 import './App.css';
+import { observer , inject } from "mobx-react";
+
 
 @inject("store")
 @observer
@@ -50,7 +51,7 @@ class NavBarMD extends Component {
                 <Navbar light color="gray ligthen-2"  expand="md" scrolling>
                 <Container>
                     <NavbarBrand href="/">
-                        <img src={logo}/> Instagram photo retriever
+                        <img src={logo} alt="logo"/> Instagram photo retriever
                     </NavbarBrand>
                     { !this.state.isWideEnough && <NavbarToggler onClick = { this.onClick } />}
                     <Collapse isOpen = { this.state.collapse } navbar>

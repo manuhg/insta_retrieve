@@ -1,14 +1,16 @@
 import { asyncrequest, acTokenValMinLen } from './Auth';
-import { computed, observable } from 'mobx';
-
+import { computed,action, observable } from 'mobx';
 class User{
     @observable name =null;
     @observable dp =null;
     constructor(acTokenVal)
     {
         this.waiting=false;
-        if(!acTokenVal)
+        if(acTokenVal)
+        {
+            this.acTokenVal=acTokenVal;
             this.getUserDetails();
+        }
     }
     isLoggedIn(sync)
     {
@@ -19,9 +21,9 @@ class User{
     getUserDetails()
     {
         this.waiting=true;
-        asyncrequest('https://api.instagram.com/v1/users/self/?access_token=' + acTokenVal, this.fetchUserDetails.bind(this));
+        asyncrequest('https://api.instagram.com/v1/users/self/?access_token=' + this.acTokenVal, this.fetchUserDetails.bind(this));
     }
-    fetchUserDetails(data)
+    @action fetchUserDetails(data)
     {
         if (data && data.data.full_name && data.data.profile_picture) 
         {
@@ -32,7 +34,7 @@ class User{
         this.waiting=false;
     }
 }
-export default class Datastore
+ class Datastore
 {
     @observable addHash=true;
     @observable user = null;
@@ -42,11 +44,12 @@ export default class Datastore
     constructor()
     {
         this.logout=null;
+        this.title="hello";
     }
 
     @computed get hashVals()
     {
-            if (!this.hashstr || this.hashStr.indexOf('#')==-1) 
+            if (!this.hashstr || this.hashStr.indexOf('#')===-1) 
                 return [];
 
             // in case user specifies multiple hashes
@@ -68,22 +71,22 @@ export default class Datastore
     {
         if(!this.acTokenVal)
             this.user=null;
-        else if(this.acTokenVal&&this.acTokenVal.length>acTokenValValMinLen)
+        else if(this.acTokenVal&&this.acTokenVal.length>acTokenValMinLen)
         {
             this.user=new User(this.acTokenVal);
             return true;
         }
         return false;
     }
-    setHashStr(val)
+    @action setHashStr(val)
     {
         this.hashStr=val;
-        return hashVals();
+        return this.hashVals();
     }
-    setacessToken(acTokenVal)
+    @action setacessToken(acTokenVal)
     {
         this.acTokenVal=acTokenVal;
-        return userStatus();
+        return this.userStatus();
     }
 
     isLoggedIn(sync)
@@ -93,3 +96,5 @@ export default class Datastore
         return false;
     }
 }
+
+export default new Datastore();

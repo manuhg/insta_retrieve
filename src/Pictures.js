@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
-import { Modal, Well, Panel, Grid, Row, Col, Button, Thumbnail, Tabs, Tab } from 'react-bootstrap';
+import { Panel, Grid, Row, Col, Button, Thumbnail} from 'react-bootstrap';
 import { asyncrequest } from './Auth';
 import HashTagModal from './HashTagModal';
+import { observer , inject } from "mobx-react";
 import './App.css';
+import AppBody from './AppBody';
 
 function Image(props) {
     var data = props.data;
@@ -59,7 +61,7 @@ class Pictures extends Component {
                 Images = () => <Row><Col md={10} mdOffset={1}><Row>{Imglist}</Row></Col></Row>;
         }
         return (
-            <div><NavBarMD logout={this.props.logout} />
+            <div><AppBody>
                 <Panel>
                     <Grid style={{ padding: '10px 0px 10px 0' }}>
                         <Row><Col md={10} mdOffset={1}><img alt="dp" className="instadp" src={this.state.user.dp} /> </Col></Row>
@@ -74,7 +76,7 @@ class Pictures extends Component {
                         <Images />
                     </Grid>
                 </Panel>
-
+                </AppBody>
             </div>);
     }
     getRecentMedia() {
