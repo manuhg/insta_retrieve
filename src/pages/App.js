@@ -5,6 +5,7 @@ import 'resources/App.css';
 import AppBody from 'common/AppBody';
 import * as Auth from 'common/Auth';
 import Pictures from 'pages/Pictures';
+import app_routes from 'Routes';
 
 class App extends Component 
 {
@@ -12,6 +13,7 @@ class App extends Component
   {
     super(props);
     const {store}=this.props.store;
+
     store.login(Auth.getCookie(Auth.acToken));
     store.setHashStr(window.location.hash || Auth.getCookie(Auth.hashStr));
     document.body.onhashchange = this.onhashchange.bind(this);
@@ -21,12 +23,9 @@ class App extends Component
     this.store.setHashStr(window.location.hash);
   }
 
-  login()
-  {
-    return Auth.redirect(Auth.auth_url);
-  }
   render() {
     const {store}=this.props.store;
+    const {router: {goTo}} = store;
 
     Auth.setCookie(Auth.hashStr, store.hashStr);
     if (store.user.isLoggedIn)
@@ -36,7 +35,7 @@ class App extends Component
       return(<AppBody> <Pictures/></AppBody>);
     }
     else
-      return (<AppBody><this.login /></AppBody>);
+      store.router.goTo(app_routes.auth,store);
   }
 }
 

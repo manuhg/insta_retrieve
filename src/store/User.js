@@ -1,4 +1,4 @@
-import { asyncrequest, acTokenValMinLen } from 'common/Auth';
+import { asyncrequest } from 'common/Auth';
 import { computed, action, observable } from 'mobx';
 import { logout as auth_logout} from 'common/Auth';
 
@@ -7,7 +7,6 @@ class User
     @observable acTokenVal
     @observable name
     @observable dp
-    @observable isLoggedIn
 
     constructor(acTokenVal) 
     {
@@ -18,7 +17,6 @@ class User
     nullify()
     {
         this.acTokenVal = this.name = this.dp = null;
-        this.isLoggedIn = false;
     }
     login(acTokenVal) 
     {
@@ -39,15 +37,18 @@ class User
     {
         asyncrequest('https://api.instagram.com/v1/users/self/?access_token=' + this.acTokenVal, this.fetchUserDetails.bind(this));
     }
-
+    @computed get isLoggedIn()
+    {
+        if(this.name&&this.dp&&this.acTokenVal)
+            return true;
+        return false;
+    }
     @action fetchUserDetails(data) 
     {
         if (data && data.data.full_name && data.data.profile_picture) {
             this.name = data.data.full_name;
             this.dp = data.data.profile_picture;
-
         }
-        this.waiting = false;
     }
 }
 export default User;

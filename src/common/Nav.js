@@ -35,10 +35,10 @@ class NavBarMD extends Component {
     }
 
     render() {
-        var NavDp= null;
-        var NavLogout=null;
-        const store=this.props.store;
-        if(store.user.isLoggedIn())
+        var NavDp = () => <span>&nbsp;</span>;
+        var NavLogout = () => <span>&nbsp;</span>;
+        const {store}=this.props.store;
+        if(store.user.isLoggedIn)
         {
             NavDp=<NavItem><Image src={store.user.dp} alt={store.user.name} responsive/></NavItem>;
             NavLogout=

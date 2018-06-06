@@ -1,4 +1,3 @@
-import {  acTokenValMinLen } from 'common/Auth';
 import { computed,action, observable } from 'mobx';
 import User from 'store/User';
 
