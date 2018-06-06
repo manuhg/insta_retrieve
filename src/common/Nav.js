@@ -3,10 +3,9 @@ import FontAwesomeIcon from '@fortawesome/react-fontawesome';
 import solids from '@fortawesome/fontawesome-free-solid';
 import { Image } from 'react-bootstrap';
 import { Navbar, Button, Container, NavbarBrand, NavbarNav, NavbarToggler, Collapse, NavItem, NavLink } from 'mdbreact';
-import logo from './img/pickcel.png';
-import './App.css';
 import { observer , inject } from "mobx-react";
 
+import logo from 'resources/pickcel.png';
 
 @inject("store")
 @observer

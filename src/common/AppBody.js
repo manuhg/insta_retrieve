@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Grid, Row, Col } from 'react-bootstrap';
-import NavBarMD from './Nav';
-import './App.css';
+import NavBarMD from 'common/Nav';
 
 class AppBody extends Component {
   render() {

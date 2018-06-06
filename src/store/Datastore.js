@@ -1,4 +1,4 @@
-import { asyncrequest, acTokenValMinLen } from './Auth';
+import { asyncrequest, acTokenValMinLen } from 'common/Auth';
 import { computed,action, observable } from 'mobx';
 class User{
     @observable name =null;

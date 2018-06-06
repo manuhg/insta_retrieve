@@ -1,4 +1,4 @@
-import store from './Datastore';
+import store from 'store/Datastore';
 import {RouterStore} from 'mobx-router';
 
  const Stores = {

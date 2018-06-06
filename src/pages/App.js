@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-import './App.css';
-import AppBody from './AppBody';
-import Pictures from './Pictures';
-import * as Auth from './Auth';
 import { observer , inject } from "mobx-react";
 
+import 'resources/App.css';
+import AppBody from 'common/AppBody';
+import * as Auth from 'common/Auth';
+import Pictures from 'pages/Pictures';
 
 class App extends Component 
 {

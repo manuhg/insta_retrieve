@@ -2,11 +2,10 @@ import React, { Component } from 'react';
 import { Panel, Button } from 'react-bootstrap';
 import FontAwesomeIcon from '@fortawesome/react-fontawesome';
 import brands from '@fortawesome/fontawesome-free-brands';
-import './App.css';
-import AppBody from './AppBody';
-import { auth_url, login, redirect, getCookie, acToken } from './Auth';
 import { observer , inject } from "mobx-react";
 
+import AppBody from 'common/AppBody';
+import { auth_url, login, redirect, getCookie, acToken } from 'common/Auth';
 
 @inject("store")
 @observer

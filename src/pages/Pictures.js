@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import { Panel, Grid, Row, Col, Button, Thumbnail} from 'react-bootstrap';
-import { asyncrequest } from './Auth';
-import HashTagModal from './HashTagModal';
 import { observer , inject } from "mobx-react";
-import './App.css';
-import AppBody from './AppBody';
+
+import HashTagModal from 'common/HashTagModal';
+import AppBody from 'common/AppBody';
+import { asyncrequest } from 'common/Auth';
 
 function Image(props) {
     var data = props.data;
