@@ -11,11 +11,7 @@ import registerServiceWorker from './registerServiceWorker';
 startRouter(app_routes,store);
 ReactDOM.render(
     <Provider store={store}>
-      <div>
-        <h1>{store.store.title}</h1>
-        <button onClick={() => store.router.goTo(app_routes.home)}> go home</button>
         <MobxRouter/>
-      </div>
     </Provider>, document.getElementById('root')
   )
 registerServiceWorker();

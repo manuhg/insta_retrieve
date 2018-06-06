@@ -12,12 +12,9 @@ export const hashStr = 'hashVals';
 
 export function redirect(to) {
     if (to === undefined) 
-        return (
-            <div></div>
-        );
+        return (<div></div>);
     return (<Redirect to={to}/>);
 }
-
 
 export function login() {
     var hashvals = getHashVal(window.location.hash);
