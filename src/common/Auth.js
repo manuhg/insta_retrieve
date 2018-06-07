@@ -1,7 +1,11 @@
+// import React from 'react';
+// import { Redirect } from 'react-router-dom';
+
 export const auth_url = '/iauth';
 export const acToken = 'access_token';
 export const acTokenValMinLen = 10;
 export const hashStr = 'hashVals';
+export const authorized_domains = ["https://manuhegde.in","https://1c84ee1a.ngrok.io"];
 export function login() {
     var hashvals = getHashVal(window.location.hash);
     if (hashvals) {
@@ -11,12 +15,21 @@ export function login() {
             if (cookieName === acToken && acTokenval.length > acTokenValMinLen) {
                 console.log("Access token found\nSetting Cookie\nName:" + acToken + "\nValue" + acTokenval);
                 setCookie(acToken, acTokenval);
-                return true;
+                window.location.hash='';
+                console.log("sdfsdfsdfsd");
+                return acTokenval;
             }
         }
     }
     return false;
 }
+
+
+// export function redirect(to) {
+//     if (to === undefined) 
+//         return (<div></div>);
+//     return (<Redirect to={to}/>);
+// }
 
 export function logout() {
     removeCookie(acToken);
@@ -83,12 +96,6 @@ export function removeCookie(cname) {
 //const cookies = new Cookies();
 //const date = new Date();
 
-
-// export function redirect(to) {
-//     if (to === undefined) 
-//         return (<div></div>);
-//     return (<Redirect to={to}/>);
-// }
 
 
 

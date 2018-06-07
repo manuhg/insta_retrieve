@@ -27,16 +27,17 @@ class App extends Component
 
   render() {
     const {data,router}=this.props.store;
-
+    console.log(data);
     Auth.setCookie(Auth.hashStr, data.hashStr);
     if (data.user.isLoggedIn)
     {
-      data.setHashStr(Auth.getCookie(Auth.hashStr));
+      window.location.hash=Auth.getCookie(Auth.hashStr);
       Auth.removeCookie(Auth.hashStr);
       return(<AppBody> <Pictures/></AppBody>);
     }
     else
       router.goTo(app_routes.auth,this.props.store);
+      return(<AppBody> Please wait</AppBody>);
   }
 }
 
