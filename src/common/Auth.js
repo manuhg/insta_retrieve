@@ -1,21 +1,7 @@
-import React from 'react';
-import { Redirect } from 'react-router-dom';
-//import Cookies from 'universal-cookie';
-
-//const cookies = new Cookies();
-//const date = new Date();
-
 export const auth_url = '/iauth';
 export const acToken = 'access_token';
 export const acTokenValMinLen = 10;
 export const hashStr = 'hashVals';
-
-export function redirect(to) {
-    if (to === undefined) 
-        return (<div></div>);
-    return (<Redirect to={to}/>);
-}
-
 export function login() {
     var hashvals = getHashVal(window.location.hash);
     if (hashvals) {
@@ -91,11 +77,26 @@ export function removeCookie(cname) {
 /////////////////////////////////////////////////////////////not used anymore///////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-export function goToLogin() {
-    if(window.location.hash)
-        setCookie(hashStr, window.location.hash);
-    return redirect(auth_url);
-}
+
+//import Cookies from 'universal-cookie';
+
+//const cookies = new Cookies();
+//const date = new Date();
+
+
+// export function redirect(to) {
+//     if (to === undefined) 
+//         return (<div></div>);
+//     return (<Redirect to={to}/>);
+// }
+
+
+
+// export function goToLogin() {
+//     if(window.location.hash)
+//         setCookie(hashStr, window.location.hash);
+//     return redirect(auth_url);
+// }
 
 export function isLoggedIn(acTokenval) {
     //acTokenval=acTokenval||getCookie(acToken);

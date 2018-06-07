@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import FontAwesomeIcon from '@fortawesome/react-fontawesome';
 import solids from '@fortawesome/fontawesome-free-solid';
 import { Image } from 'react-bootstrap';
-import { Navbar, Button, Container, NavbarBrand, NavbarNav, NavbarToggler, Collapse, NavItem, NavLink } from 'mdbreact';
+import { Navbar, Button, Container, NavbarBrand, NavbarNav, NavbarToggler, Collapse, NavItem } from 'mdbreact';
 import { observer , inject } from "mobx-react";
 
 import logo from 'resources/pickcel.png';
@@ -35,16 +35,19 @@ class NavBarMD extends Component {
     }
 
     render() {
-        var NavDp = () => <span>&nbsp;</span>;
-        var NavLogout = () => <span>&nbsp;</span>;
-        const {store}=this.props.store;
-        if(store.user.isLoggedIn)
+        var NavRight = () => <span style={{display:'none'}}>&nbsp;</span>;
+        const {data}=this.props.store;
+        if(data.user.isLoggedIn)
         {
-            NavDp=<NavItem><Image src={store.user.dp} alt={store.user.name} responsive/></NavItem>;
-            NavLogout=
-                     <NavItem>
-                     <Button onClick={() =>store.logout()} bsStyle="primary">{(solids)?<FontAwesomeIcon icon={['fas', 'power-off']} size='2x'/>:"Logout"}</Button>
-                    </NavItem>
+            NavRight =
+            <NavbarNav right>
+                <NavItem>
+                    <Image src={data.user.dp} alt={data.user.name} responsive />
+                </NavItem>
+                <NavItem>
+                    <Button onClick={() => data.logout()} bsStyle="primary">{(solids) ? <FontAwesomeIcon icon={['fas', 'power-off']} size='2x' /> : "Logout"}</Button>
+                </NavItem>
+            </NavbarNav>
         }
         return (
                 <Navbar light color="gray ligthen-2"  expand="md" scrolling>
@@ -55,17 +58,13 @@ class NavBarMD extends Component {
                     { !this.state.isWideEnough && <NavbarToggler onClick = { this.onClick } />}
                     <Collapse isOpen = { this.state.collapse } navbar>
                         <NavbarNav left>
-                          <NavItem active>
-                              <NavLink to="/">Home</NavLink>
+                          {/* <NavItem active>&nbsp;
                           </NavItem>
                           <NavItem>
-                              <NavLink to="/pictures">Pictures</NavLink>
-                          </NavItem>                      
+                             &nbsp;
+                          </NavItem>                       */}
                         </NavbarNav>
-                        <NavbarNav right>
-                        <NavDp/>
-                        <NavLogout/>
-                        </NavbarNav>
+                        <NavRight />
                     </Collapse>
                     </Container>
                 </Navbar>

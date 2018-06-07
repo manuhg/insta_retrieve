@@ -2,7 +2,7 @@ import Datastore from 'store/Datastore';
 import {RouterStore} from 'mobx-router';
 
 const store = {
-  store: new Datastore(),
+  data: new Datastore(),
   router: new RouterStore()
 };
 

@@ -5,7 +5,8 @@ import brands from '@fortawesome/fontawesome-free-brands';
 import { observer , inject } from "mobx-react";
 
 import AppBody from 'common/AppBody';
-import { auth_url, login, redirect, getCookie, acToken } from 'common/Auth';
+import { auth_url, login, getCookie, acToken } from 'common/Auth';
+import app_routes from 'Routes';
 
 @inject("store")
 @observer
@@ -13,11 +14,12 @@ class AuthPage extends Component
 {
     render()
     {
-        if(this.props.store.isLoggedIn('synchronous'))
-            return redirect("/");
+        const {store}=this.props;
+        if(store.data.user.isLoggedIn)
+            store.router.goTo(app_routes.home,this.props.store)
         if(login())
         {
-            this.props.store.setacessToken(getCookie(acToken));
+            store.data.login(getCookie(acToken));
             return(<AppBody><p>Loading user this.fetchUserDetails..</p></AppBody> );
         }
 

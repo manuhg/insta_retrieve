@@ -3,7 +3,6 @@ import { Panel, Grid, Row, Col, Button, Thumbnail} from 'react-bootstrap';
 import { observer , inject } from "mobx-react";
 
 import HashTagModal from 'common/HashTagModal';
-import AppBody from 'common/AppBody';
 import { asyncrequest } from 'common/Auth';
 
 function Image(props) {
@@ -61,7 +60,7 @@ class Pictures extends Component {
                 Images = () => <Row><Col md={10} mdOffset={1}><Row>{Imglist}</Row></Col></Row>;
         }
         return (
-            <div><AppBody>
+            <div>
                 <Panel>
                     <Grid style={{ padding: '10px 0px 10px 0' }}>
                         <Row><Col md={10} mdOffset={1}><img alt="dp" className="instadp" src={this.state.user.dp} /> </Col></Row>
@@ -76,7 +75,6 @@ class Pictures extends Component {
                         <Images />
                     </Grid>
                 </Panel>
-                </AppBody>
             </div>);
     }
     getRecentMedia() {
