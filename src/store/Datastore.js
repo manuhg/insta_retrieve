@@ -30,7 +30,7 @@ class Datastore
         for (var i = 0; i < hashvals_arr.length; i++)
             if (!hashvals_arr[i])
                 hashvals_arr.splice(i, 1);
-        for (i = 0; i < hashvals_arr.length; i++) {
+        for (i = 0; i < hashvals_arr.length && hashvals_arr[i]; i++) {
             hashvals_arr[i] = hashvals_arr[i].trim();
             hashvals_arr[i] = hashvals_arr[i].replace(/,\s*$/, "");
             if (this.addHash)
@@ -41,7 +41,15 @@ class Datastore
     }
 
     @action setHashStr(val) {
+        val=(!val||val==='#')?' ':val;
         this.hashStr = val;
+        // var arr=this.hashStr.split('#')
+        // for (var i = 0; i < arr.length; i++)
+        //     if (!arr[i])
+        //         arr.splice(i, 1);
+        // this.hashStr='#'+arr.join('#');
+        // console.log("sethashstr:",arr,'=>',this.hashStr)
+        
     }
 
 }

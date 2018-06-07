@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import FontAwesomeIcon from '@fortawesome/react-fontawesome';
 import solids from '@fortawesome/fontawesome-free-solid';
-import { Image } from 'react-bootstrap';
 import { Navbar, Button, Container, NavbarBrand, NavbarNav, NavbarToggler, Collapse, NavItem } from 'mdbreact';
 import { observer , inject } from "mobx-react";
 
@@ -41,24 +40,29 @@ class NavBarMD extends Component {
         {
             NavRight = () =>
             <NavbarNav right>
+                {/* <NavItem> */}
+                    {/* <Image style={{width:'30%',borderRadius:'50%'}} src={store.user.dp} alt={store.user.name} responsive /> */}
+                    {/* <h3>Welcome,{store.user.name.split(' ')[0]}</h3> */}
+                {/* </NavItem> */}
                 <NavItem>
-                    <Image src={store.user.dp} alt={store.user.name} responsive />
-                </NavItem>
-                <NavItem>&nbsp;
-                    <Button onClick={() => store.logout()}  color="primary">{(solids) ? <FontAwesomeIcon icon={['fas', 'power-off']} size='2x' /> : "Logout"}</Button>
+                <div className="nav-link"><h3>Logout</h3></div>
+
+                    {/* <Button onClick={() => store.logout()}  color="primary">
+                    {(solids) ? <FontAwesomeIcon icon={['fas', 'power-off']} size='2x' /> : "Logout"}
+                    </Button> */}
                 </NavItem>
             </NavbarNav>
         }
         return (
-                <Navbar light color="gray ligthen-2"  expand="md" scrolling>
+            <Navbar color="blue-grey lighten-4" light expand="lg" sticky="top">
                 <Container>
                     <NavbarBrand href="/">
-                        <img src={logo} alt="logo"/> Instagram photo retriever
+                        <img src={logo} alt="logo" /> Instagram photo retriever
                     </NavbarBrand>
-                    { !this.state.isWideEnough && <NavbarToggler onClick = { this.onClick } />}
-                    <Collapse isOpen = { this.state.collapse } navbar>
+                    {!this.state.isWideEnough && <NavbarToggler  onClick={this.onClick} />}
+                    <Collapse isOpen={this.state.collapse} navbar>
                         <NavbarNav left>
-                          {/* <NavItem active>&nbsp;
+                            {/* <NavItem active>&nbsp;
                           </NavItem>
                           <NavItem>
                              &nbsp;
@@ -66,8 +70,8 @@ class NavBarMD extends Component {
                         </NavbarNav>
                         <NavRight />
                     </Collapse>
-                    </Container>
-                </Navbar>
+                </Container>
+            </Navbar>
         );
     }
 }

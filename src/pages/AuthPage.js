@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button, Card } from 'mdbreact';
+import { Button } from 'mdbreact';
 
 import FontAwesomeIcon from '@fortawesome/react-fontawesome';
 import brands from '@fortawesome/fontawesome-free-brands';
@@ -28,15 +28,8 @@ class AuthPage extends Component
         var current_domain=window.location.origin+'/';
         console.log(current_domain);
         console.log("User is "+((!store.user.isLoggedIn)?"not":"")+" Logged in");
-        if(store.user.waiting)
-            return (<div><h2>Logging in..</h2><h4>Please Wait</h4></div>);
 
-        if(acTokenIsValid())
-        {
-            //return redirect("/");
-            return("Redirecting..");
-        }
-        if(login())
+        if(login()&&acTokenIsValid())
         {
             store.login(getCookie(acToken));
             this.setState({redirect:true});
@@ -44,16 +37,19 @@ class AuthPage extends Component
         }
 
         return (
-            <Card style={{padding:'0px 0px 20px 0px'}}>
-            <h2>Please log in to continue</h2>
+            <div>
+            <br/><br/>
+            <h2>Welcome to Pickcel Instagram Photo Retriever</h2>
+            <h3>Please log in with your instagram account so that we can retrieve the media in your account.</h3>
                 <a
                     href={"https://api.instagram.com/oauth/authorize/?client_id=73b2e998521244e2b98b255943b42e87&redirect_uri="+current_domain+auth_url+"&response_type=token"}>
-                    <Button bsStyle="primary">
-                    {(brands)?<FontAwesomeIcon icon={['fab', 'instagram']} size='2x'/>:""}
-                        <font size="5">&nbsp;&nbsp;&nbsp;Login with Instagram</font>
+                    <Button>
+                    {(brands)?<FontAwesomeIcon style={{float:'left'}} icon={['fab', 'instagram']} size='4x'/>:""}
+                        <h3>Login with Instagram</h3>
                     </Button>
                 </a>
-            </Card>    
+            <br/><br/>
+            </div>    
         );
     }
 }

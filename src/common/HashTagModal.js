@@ -47,7 +47,6 @@ class HastagInput extends Component {
               value={this.state.value}
               placeholder="Enter hashtags"
               onChange={this.handleChange}
-              onKeyPress={this.sethashstr}
             />
             <FormControl.Feedback />
             <HelpBlock>{this.hashstr}&nbsp;Number of hastags:&nbsp;{this.hvLength}</HelpBlock>
@@ -87,6 +86,7 @@ class HashTagModal extends Component {
         window.location.hash=this.hashstr;
   }
   render() {
+    console.log("OKAY! "+this.state.show)
     return (
       <div>
 

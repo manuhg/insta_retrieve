@@ -11,10 +11,9 @@
 }
 
 .imgCol {
-  padding: 0px 0px 0px 0px;
+  padding: 0px 5px 0px 0px;
   float:left;
-  float: none;
-  margin: 0 auto;
+  /* margin: 0 auto; */
   /* padding-top:5px;
   padding-bottom:5px; */
   /* padding: 5px 5px 5px 5px;

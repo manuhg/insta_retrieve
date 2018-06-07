@@ -53,7 +53,7 @@ class Pictures extends Component {
             }
             if (Imglist && Imglist.length > 0)
                 Images = () => <Row className="text-center text-lg-left">{Imglist}</Row>;
-        }
+        }console.log(store);
         return (
             <Container>
                 <Row className="text-center text-lg-left">
@@ -62,7 +62,7 @@ class Pictures extends Component {
                             <Row className="text-center text-lg-left">
                                 <Col md="4"><Button onClick={() => this.getAllMedia()}>All Photos</Button> </Col>
                                 <Col md="4" > <Button onClick={() => this.getRecentMedia()}>Recent Photos</Button></Col>
-                                <Col md="4">{(store.hashStr) ? <Button onClick={() => this.getMediaByHashtags()}>Photos with {store.hashStr}</Button>
+                                <Col md="4">{(store.hashStr.trim()) ? <Button onClick={() => this.getMediaByHashtags()}>Photos with {store.hashStr}</Button>
                                     : <HashTagModal />}</Col>
                             </Row>
                             <Images />

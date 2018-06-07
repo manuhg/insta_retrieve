@@ -16,11 +16,12 @@ class App extends Component
     super(props);
     const {store}=this.props;
     console.log(store);
+    document.body.onhashchange = this.onhashchange.bind(this);
 
     store.login(Auth.getCookie(Auth.acToken));
     var hstr=window.location.hash || Auth.getCookie(Auth.hashStr);
-    if(hstr && hstr.indexOf('#')===-1)
-      hstr='';
+    if(hstr)
+      hstr=Auth.removeacToken(hstr.split('#'))
     store.setHashStr(hstr);
   }
   onhashchange()
@@ -31,12 +32,11 @@ class App extends Component
     const {store}=this.props;
     
     Auth.setCookie(Auth.hashStr, store.hashStr);
-    document.body.onhashchange = undefined;
+    //document.body.onhashchange = undefined;
     if (store.user.isLoggedIn)
     {
-      window.location.hash=Auth.getCookie(Auth.hashStr);
+      //window.location.hash=Auth.getCookie(Auth.hashStr);
       Auth.removeCookie(Auth.hashStr);
-      document.body.onhashchange = this.onhashchange.bind(this);
       return(<AppBody><Pictures/></AppBody>);
     }
     else
