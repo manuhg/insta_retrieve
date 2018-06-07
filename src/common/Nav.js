@@ -36,16 +36,16 @@ class NavBarMD extends Component {
 
     render() {
         var NavRight = () => <span style={{display:'none'}}>&nbsp;</span>;
-        const {data}=this.props.store;
-        if(data.user.isLoggedIn)
+        const {store}=this.props;
+        if(!store.user.waiting&&store.user.isLoggedIn)
         {
-            NavRight =
+            NavRight = () =>
             <NavbarNav right>
                 <NavItem>
-                    <Image src={data.user.dp} alt={data.user.name} responsive />
+                    <Image src={store.user.dp} alt={store.user.name} responsive />
                 </NavItem>
-                <NavItem>
-                    <Button onClick={() => data.logout()} bsStyle="primary">{(solids) ? <FontAwesomeIcon icon={['fas', 'power-off']} size='2x' /> : "Logout"}</Button>
+                <NavItem>&nbsp;
+                    <Button onClick={() => store.logout()}  color="primary">{(solids) ? <FontAwesomeIcon icon={['fas', 'power-off']} size='2x' /> : "Logout"}</Button>
                 </NavItem>
             </NavbarNav>
         }

@@ -5,13 +5,17 @@ import brands from '@fortawesome/fontawesome-free-brands';
 import { observer , inject } from "mobx-react";
 
 import AppBody from 'common/AppBody';
-import { login, auth_url, authorized_domains, getCookie, acToken } from 'common/Auth';
-import app_routes from 'Routes';
+import { login, auth_url, authorized_domains, getCookie, acToken, redirect,acTokenIsValid } from 'common/Auth';
 
 @inject("store")
 @observer
 class AuthPage extends Component
 {
+    constructor()
+    {
+        super();
+        this.state={redirect:false};
+    }
     findIndex()
     {
         for(var i=0;i<authorized_domains.length;i++)
@@ -24,16 +28,20 @@ class AuthPage extends Component
         const {store}=this.props;
         var current_domain=authorized_domains[this.findIndex()];
         console.log(current_domain);
-        if(store.data.user.isLoggedIn)
+        console.log("User is "+((!store.user.isLoggedIn)?"not":"")+" Logged in");
+        if(store.user.waiting)
+            return (<AppBody><h2>Logging in..</h2> <br/><h4>Please Wait</h4></AppBody>);
+
+        if(acTokenIsValid())
         {
-            console.log("Going back to homepage")
-            //store.router.goTo(app_routes.home,this.props.store)
-            return(<AppBody> Please wait</AppBody>);
+            //return redirect("/");
+            return("REdirecting..");
         }
         if(login())
         {
-           // store.data.login(getCookie(acToken));
-            return(<AppBody><p>Loading user this.fetchUserDetails..</p></AppBody> );
+            store.login(getCookie(acToken));
+            this.setState({redirect:true});
+            return (<AppBody><h2>Logging in..</h2> <br/><h4>Please Wait</h4></AppBody>);
         }
 
         return (

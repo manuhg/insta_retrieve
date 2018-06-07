@@ -16,8 +16,9 @@ class Datastore
     }
     logout()
     {
+        console.log("LOGOUT========================")
         this.user.logout();
-        //this.login(null); //create a new null user object //enable if components are not updating
+        this.login(null); //create a new null user object //enable if components are not updating
     }
     @computed get hashVals() 
     {

@@ -7,35 +7,30 @@ class User
     @observable acTokenVal
     @observable name
     @observable dp
-
+    @observable waiting
     constructor(acTokenVal) 
     {
-        this.nullify();
+        this.waiting=false;
+        console.log("Creating user actoken:"+acTokenVal);
         if (acTokenVal)
             this.login(acTokenVal);
     }
-    nullify()
+    @action nullify()
     {
         this.acTokenVal = this.name = this.dp = null;
     }
-    login(acTokenVal) 
+    @action login(acTokenVal) 
     {
         this.acTokenVal=acTokenVal;
+        console.log("Logging in, access token:"+this.acTokenVal)
+        this.waiting=false;
         if (this.acTokenVal)
             this.getUserDetails();
-        else
-            this.nullify();
     }
-
     logout() 
     {
         this.nullify();
         auth_logout();
-    }
-
-    getUserDetails() 
-    {
-        asyncrequest('https://api.instagram.com/v1/users/self/?access_token=' + this.acTokenVal, this.fetchUserDetails.bind(this));
     }
     @computed get isLoggedIn()
     {
@@ -43,12 +38,21 @@ class User
             return true;
         return false;
     }
+    getUserDetails() 
+    {
+        this.waiting=true;
+        asyncrequest('https://api.instagram.com/v1/users/self/?access_token=' + this.acTokenVal, this.fetchUserDetails.bind(this));
+    }
+    
     @action fetchUserDetails(data) 
     {
+        console.log("Fetching user details")
         if (data && data.data.full_name && data.data.profile_picture) {
             this.name = data.data.full_name;
             this.dp = data.data.profile_picture;
         }
+        this.waiting=false;
+        console.log("No more waiting!")
     }
 }
 export default User;

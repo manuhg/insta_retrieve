@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { Grid, Row, Col } from 'react-bootstrap';
 import NavBarMD from 'common/Nav';
 
+// import DevTools from 'mobservable-react-devtools';
+
 class AppBody extends Component {
   render() {
     return (
@@ -20,6 +22,7 @@ class AppBody extends Component {
                     </Row>
                   </Grid>
                 </Panel> */}
+                {/* <DevTools /> */}
               </Col>
             </Row>
           </Grid>

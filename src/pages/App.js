@@ -5,7 +5,6 @@ import 'resources/App.css';
 import AppBody from 'common/AppBody';
 import * as Auth from 'common/Auth';
 import Pictures from 'pages/Pictures';
-import app_routes from 'Routes';
 
 @inject("store")
 @observer
@@ -14,30 +13,30 @@ class App extends Component
   constructor(props) 
   {
     super(props);
-    const {data}=this.props.store;
+    const {store}=this.props;
+    console.log(store);
 
-    data.login(Auth.getCookie(Auth.acToken));
-    data.setHashStr(window.location.hash || Auth.getCookie(Auth.hashStr));
-    document.body.onhashchange = this.onhashchange.bind(this);
+    store.login(Auth.getCookie(Auth.acToken));
+    store.setHashStr(window.location.hash || Auth.getCookie(Auth.hashStr));
   }
   onhashchange()
   {
     this.store.setHashStr(window.location.hash);
   }
-
   render() {
-    const {data,router}=this.props.store;
-    console.log(data);
-    Auth.setCookie(Auth.hashStr, data.hashStr);
-    if (data.user.isLoggedIn)
+    const {store}=this.props;
+    
+    Auth.setCookie(Auth.hashStr, store.hashStr);
+    document.body.onhashchange = undefined;
+    if (store.user.isLoggedIn)
     {
       window.location.hash=Auth.getCookie(Auth.hashStr);
       Auth.removeCookie(Auth.hashStr);
+      document.body.onhashchange = this.onhashchange.bind(this);
       return(<AppBody> <Pictures/></AppBody>);
     }
     else
-      router.goTo(app_routes.auth,this.props.store);
-      return(<AppBody> Please wait</AppBody>);
+      return Auth.redirect(Auth.auth_url);
   }
 }
 

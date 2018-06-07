@@ -1,5 +1,5 @@
-// import React from 'react';
-// import { Redirect } from 'react-router-dom';
+import React from 'react';
+import { Redirect } from 'react-router-dom';
 
 export const auth_url = '/iauth';
 export const acToken = 'access_token';
@@ -7,7 +7,7 @@ export const acTokenValMinLen = 10;
 export const hashStr = 'hashVals';
 export const authorized_domains = ["https://manuhegde.in","https://1c84ee1a.ngrok.io"];
 export function login() {
-    var hashvals = getHashVal(window.location.hash);
+    var hashvals = getHashVal(window.location.hash,false);
     if (hashvals) {
         for (var i = 0; i < hashvals.length; i++) {
             let [cookieName,
@@ -23,13 +23,33 @@ export function login() {
     }
     return false;
 }
+export function getHashVal(hashstr,addHash) {
+    if (!hashstr) 
+        return null;
+    if(addHash===undefined)
+        addHash=true;
+    // in case user specifies multiple hashes
+    var hashvals = hashstr.split('#');
+    for (var i = 0; i < hashvals.length; i++) 
+        if (!hashvals[i]) 
+            hashvals.splice(i, 1);
+    for ( i = 0; i < hashvals.length; i++)
+    {
+        hashvals[i]=hashvals[i].trim();
+        hashvals[i]=hashvals[i].replace(/,\s*$/,"");
+        if(addHash)
+            hashvals[i]='#'+hashvals[i]; 
+    }
+    return hashvals;
+}
 
 
-// export function redirect(to) {
-//     if (to === undefined) 
-//         return (<div></div>);
-//     return (<Redirect to={to}/>);
-// }
+export function redirect(to) {
+    console.log("Redirect to "+to)
+    if (to === undefined) 
+        return (<div></div>);
+    return (<Redirect to={to}/>);
+}
 
 export function logout() {
     removeCookie(acToken);
@@ -105,7 +125,7 @@ export function removeCookie(cname) {
 //     return redirect(auth_url);
 // }
 
-export function isLoggedIn(acTokenval) {
+export function acTokenIsValid(acTokenval) {
     //acTokenval=acTokenval||getCookie(acToken);
     if (!acTokenval) 
         acTokenval = getCookie(acToken);
@@ -115,23 +135,4 @@ export function isLoggedIn(acTokenval) {
             // else     removeCookie(acToken); //if cookie has invalid value ,remove it
         }
     return false;
-}
-export function getHashVal(hashstr,addHash) {
-    if (!hashstr) 
-        return null;
-    if(addHash===undefined)
-        addHash=true;
-    // in case user specifies multiple hashes
-    var hashvals = hashstr.split('#');
-    for (var i = 0; i < hashvals.length; i++) 
-        if (!hashvals[i]) 
-            hashvals.splice(i, 1);
-    for ( i = 0; i < hashvals.length; i++)
-    {
-        hashvals[i]=hashvals[i].trim();
-        hashvals[i]=hashvals[i].replace(/,\s*$/,"");
-        if(addHash)
-            hashvals[i]='#'+hashvals[i]; 
-    }
-    return hashvals;
 }
