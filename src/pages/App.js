@@ -5,6 +5,7 @@ import 'resources/App.css';
 import AppBody from 'common/AppBody';
 import * as Auth from 'common/Auth';
 import Pictures from 'pages/Pictures';
+import AuthPage from './AuthPage';
 
 @inject("store")
 @observer
@@ -17,11 +18,14 @@ class App extends Component
     console.log(store);
 
     store.login(Auth.getCookie(Auth.acToken));
-    store.setHashStr(window.location.hash || Auth.getCookie(Auth.hashStr));
+    var hstr=window.location.hash || Auth.getCookie(Auth.hashStr);
+    if(hstr && hstr.indexOf('#')===-1)
+      hstr='';
+    store.setHashStr(hstr);
   }
   onhashchange()
   {
-    this.store.setHashStr(window.location.hash);
+    this.props.store.setHashStr(window.location.hash);
   }
   render() {
     const {store}=this.props;
@@ -33,10 +37,11 @@ class App extends Component
       window.location.hash=Auth.getCookie(Auth.hashStr);
       Auth.removeCookie(Auth.hashStr);
       document.body.onhashchange = this.onhashchange.bind(this);
-      return(<AppBody> <Pictures/></AppBody>);
+      return(<AppBody><Pictures/></AppBody>);
     }
     else
-      return Auth.redirect(Auth.auth_url);
+    return(<AppBody><AuthPage/></AppBody>);
+
   }
 }
 

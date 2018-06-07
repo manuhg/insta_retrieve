@@ -8,11 +8,11 @@ class Datastore
     @observable hashStr = ""
     constructor() 
     {
-        this.login(null);
+        this.user=new User();
     }
     login(acTokenVal)
     {
-        this.user=new User(acTokenVal);
+        this.user.login(acTokenVal);
     }
     logout()
     {

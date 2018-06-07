@@ -1,11 +1,11 @@
 import React from 'react';
 import { Redirect } from 'react-router-dom';
 
-export const auth_url = '/iauth';
+export const auth_url ='';// '/iauth';
 export const acToken = 'access_token';
 export const acTokenValMinLen = 10;
 export const hashStr = 'hashVals';
-export const authorized_domains = ["https://manuhegde.in","https://1c84ee1a.ngrok.io"];
+export const authorized_domains = ["https://manuhegde.in","https://334ee85b.ngrok.io/"];
 export function login() {
     var hashvals = getHashVal(window.location.hash,false);
     if (hashvals) {
@@ -16,7 +16,6 @@ export function login() {
                 console.log("Access token found\nSetting Cookie\nName:" + acToken + "\nValue" + acTokenval);
                 setCookie(acToken, acTokenval);
                 window.location.hash='';
-                console.log("sdfsdfsdfsd");
                 return acTokenval;
             }
         }

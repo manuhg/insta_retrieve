@@ -8,12 +8,11 @@ import { asyncrequest } from 'common/Auth';
 function Image(props) {
     var data = props.data;
     if (!data) return (<Col></Col>);
-    console.log(data);
     return (
         <Col className="imgCol" md={3}>
 
-            <Thumbnail className="imgThumb" responsive href={data.img.standard_resolution.url} src={data.img.standard_resolution.url} alt={data.alt}>
-                <div className="infodiv"><h5>{data.alt}</h5><a href={data.link}> <p style={{ color: 'blue' }}>{data.tags}</p></a></div>
+            <Thumbnail className="imgThumb" responsive="true" href='#' onClick={()=>window.open(data.link,'_blank')} src={data.img.standard_resolution.url} alt={data.alt}>
+                <div className="infodiv"><h5>{data.alt}</h5><p style={{ color: 'blue' }}>{data.tags}</p></div>
             </Thumbnail>
         </Col>
     );
@@ -24,25 +23,17 @@ function Image(props) {
 class Pictures extends Component {
     constructor() {
         super();
-        this.state = {
-            user: {
-                name: null,
-                dp: null
-            },
-            data: null,
-            imagedata: false
-        };
+        this.state = {data: null};
         this.HashtagsSpecified = false;
     }
     render() {
-        if (this.props.hashvals && this.props.hashvals.length > 1)
-            this.HashtagsSpecified = true;
-        if (!this.props.store.accessToken)
+        const {store} = this.props;
+        if (!store.user.isLoggedIn)
             return (
                 <div>
                     <h3 style={{
                         color: 'red'
-                    }}>Invalid access token</h3>
+                    }}>You need to be logged in</h3>
                 </div>
             );
 
@@ -51,7 +42,7 @@ class Pictures extends Component {
                 <Col>&nbsp;</Col>
             </Row>
         );
-        if (this.state.imagedata && this.state.data) {
+        if (this.state.data) {
             var Imglist = [];
             for (var i in this.state.data) {
                 Imglist.push(<Image key={i} data={this.state.data[i]} />);
@@ -63,13 +54,10 @@ class Pictures extends Component {
             <div>
                 <Panel>
                     <Grid style={{ padding: '10px 0px 10px 0' }}>
-                        <Row><Col md={10} mdOffset={1}><img alt="dp" className="instadp" src={this.state.user.dp} /> </Col></Row>
-                        <Row><Col md={10} mdOffset={1}><h2>Hi {this.state.user.name}</h2></Col></Row>
-
                         <Row>
                             <Col md={4}><Button onClick={() => this.getAllMedia()}>All Photos</Button> </Col>
                             <Col md={4} > <Button onClick={() => this.getRecentMedia()}>Recent Photos</Button></Col>
-                            <Col md={4}>{(this.props.hashvals) ? <Button onClick={() => this.getMediaByHashtags()}>Photos with {this.props.hashvals.join()}</Button>
+                            <Col md={4}>{(store.hashStr) ? <Button onClick={() => this.getMediaByHashtags()}>Photos with {store.hashStr}</Button>
                                 : <HashTagModal />}</Col>
                         </Row>
                         <Images />
@@ -78,18 +66,18 @@ class Pictures extends Component {
             </div>);
     }
     getRecentMedia() {
-        asyncrequest('https://api.instagram.com/v1/users/self/media/recent/?access_token=' + this.props.store.accessToken, this.fetchRecentMedia.bind(this))
+        asyncrequest('https://api.instagram.com/v1/users/self/media/recent/?access_token=' + this.props.store.user.acTokenVal, this.fetchRecentMedia.bind(this))
     }
     getMediaByHashtag(hashtag) {
-        asyncrequest('https://api.instagram.com/v1/tags/' + hashtag + '/media/recent?access_token=' + this.props.store.accessToken, this.fetchMediaData.bind(this));
+        asyncrequest('https://api.instagram.com/v1/tags/' + hashtag + '/media/recent?access_token=' + this.props.store.user.acTokenVal, this.fetchMediaData.bind(this));
     }
     getAllMedia() {
-        asyncrequest('https://api.instagram.com/v1/tags/nofilter/media/recent?access_token=' + this.props.store.accessToken, this.fetchMediaData.bind(this))
+        asyncrequest('https://api.instagram.com/v1/tags/nofilter/media/recent?access_token=' + this.props.store.user.acTokenVal, this.fetchMediaData.bind(this))
     }
 
     fetchMediaData(data) {
         if (data)
-            this.setState({ user: this.state.user, data: data, imagedata: true });
+            this.setState({data: data});
     }
     fetchRecentMedia(data) {
 
@@ -106,12 +94,12 @@ class Pictures extends Component {
                     tags: data.data[i].tags
                 };
             }
-            this.setState({ user: this.state.user, data: imgdata, imagedata: true });
+            this.setState({data: imgdata});
         }
     }
     getMediaByHashtags() {
-        if (!this.HashtagsSpecified)
-            ;//modal
+       // if (!this.HashtagsSpecified)
+           // ;//modal
         //for
 
     }
