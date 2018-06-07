@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Modal, Button, ControlLabel, FormGroup, FormControl, HelpBlock } from 'react-bootstrap';
+
 import { getHashVal } from 'common/Auth';
 
 class HastagInput extends Component {

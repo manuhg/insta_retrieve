@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { Panel, Grid, Row, Col, Button, Thumbnail} from 'react-bootstrap';
+import { Button, Card, CardBody, CardImage, CardTitle, CardText, Row, Col, Container } from 'mdbreact';
+
 import { observer , inject } from "mobx-react";
 
 import HashTagModal from 'common/HashTagModal';
@@ -9,11 +10,14 @@ function Image(props) {
     var data = props.data;
     if (!data) return (<Col></Col>);
     return (
-        <Col className="imgCol" md={3}>
-
-            <Thumbnail className="imgThumb" responsive="true" href='#' onClick={()=>window.open(data.link,'_blank')} src={data.img.standard_resolution.url} alt={data.alt}>
-                <div className="infodiv"><h5>{data.alt}</h5><p style={{ color: 'blue' }}>{data.tags}</p></div>
-            </Thumbnail>
+        <Col className="imgCol" lg="3" md="4" xs="6">
+            <Card>
+            <CardImage className="imgThumb img-thumbnail"  onClick={()=>window.open(data.link,'_blank')} src={data.img.standard_resolution.url} alt={data.alt} />
+            <CardBody>
+            <CardTitle className="infotitlediv text-center">{data.alt}</CardTitle>
+            <CardText  className="hashtagdiv text-center">{data.tags}</CardText>
+            </CardBody>
+            </Card>
         </Col>
     );
 }
@@ -48,22 +52,26 @@ class Pictures extends Component {
                 Imglist.push(<Image key={i} data={this.state.data[i]} />);
             }
             if (Imglist && Imglist.length > 0)
-                Images = () => <Row><Col md={10} mdOffset={1}><Row>{Imglist}</Row></Col></Row>;
+                Images = () => <Row className="text-center text-lg-left">{Imglist}</Row>;
         }
         return (
-            <div>
-                <Panel>
-                    <Grid style={{ padding: '10px 0px 10px 0' }}>
-                        <Row>
-                            <Col md={4}><Button onClick={() => this.getAllMedia()}>All Photos</Button> </Col>
-                            <Col md={4} > <Button onClick={() => this.getRecentMedia()}>Recent Photos</Button></Col>
-                            <Col md={4}>{(store.hashStr) ? <Button onClick={() => this.getMediaByHashtags()}>Photos with {store.hashStr}</Button>
-                                : <HashTagModal />}</Col>
-                        </Row>
-                        <Images />
-                    </Grid>
-                </Panel>
-            </div>);
+            <Container>
+                <Row className="text-center text-lg-left">
+                    <Col md="12" className="text-center">
+                    <Container>
+                            <Row className="text-center text-lg-left">
+                                <Col md="4"><Button onClick={() => this.getAllMedia()}>All Photos</Button> </Col>
+                                <Col md="4" > <Button onClick={() => this.getRecentMedia()}>Recent Photos</Button></Col>
+                                <Col md="4">{(store.hashStr) ? <Button onClick={() => this.getMediaByHashtags()}>Photos with {store.hashStr}</Button>
+                                    : <HashTagModal />}</Col>
+                            </Row>
+                            <Images />
+                            </Container>
+                    </Col>
+
+                </Row>
+            </Container>
+        );
     }
     getRecentMedia() {
         asyncrequest('https://api.instagram.com/v1/users/self/media/recent/?access_token=' + this.props.store.user.acTokenVal, this.fetchRecentMedia.bind(this))

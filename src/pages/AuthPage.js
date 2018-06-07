@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { Panel, Button } from 'react-bootstrap';
+import { Button, Card } from 'mdbreact';
+
 import FontAwesomeIcon from '@fortawesome/react-fontawesome';
 import brands from '@fortawesome/fontawesome-free-brands';
 import { observer , inject } from "mobx-react";
@@ -43,7 +44,7 @@ class AuthPage extends Component
         }
 
         return (
-            <Panel style={{padding:'0px 0px 20px 0px'}}>
+            <Card style={{padding:'0px 0px 20px 0px'}}>
             <h2>Please log in to continue</h2>
                 <a
                     href={"https://api.instagram.com/oauth/authorize/?client_id=73b2e998521244e2b98b255943b42e87&redirect_uri="+current_domain+auth_url+"&response_type=token"}>
@@ -52,7 +53,7 @@ class AuthPage extends Component
                         <font size="5">&nbsp;&nbsp;&nbsp;Login with Instagram</font>
                     </Button>
                 </a>
-            </Panel>    
+            </Card>    
         );
     }
 }

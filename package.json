@@ -9,6 +9,7 @@
     "@fortawesome/fontawesome-free-brands": "^5.0.13",
     "@fortawesome/fontawesome-free-solid": "^5.0.13",
     "@fortawesome/react-fontawesome": "0.0.20",
+    "bootstrap": "^4.1.1",
     "custom-react-scripts": "^0.2.2",
     "director": "1.2.8",
     "lodash": "^4.17.4",
