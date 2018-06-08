@@ -1,84 +1,83 @@
 import React, { Component } from 'react';
-import { Modal, Button, ControlLabel, FormGroup, FormControl, HelpBlock } from 'react-bootstrap';
+import { Container,Input, Button, Modal, ModalBody, ModalHeader, ModalFooter } from 'mdbreact';
+import { observer , inject } from "mobx-react";
+// import { getHashVal } from 'common/Auth';
 
-import { getHashVal } from 'common/Auth';
-
-class HastagInput extends Component {
-    constructor(props) {
-      super(props);
-      this.handleChange = this.handleChange.bind(this);
-      this.sethashstr=this.sethashstr.bind(this);
-      this.hashstr='';
-      this.state = {
-        value: ''
-      };
-    }
-    sethashstr()
-    {
-      this.props.sethashstr(this.hashstr);
-    }  
-    getValidationState() {
-      this.hashvals = getHashVal(this.state.value);
-      if(this.hashvals)
-      {
-          this.hashstr=this.hashvals.join();
-          this.hvLength =0 ||this.hashvals.length;
-      }
-      //this.props.sethashstr(this.hashstr)
-      if (this.hvLength > 1) return 'success';
-      else return 'warning';
-      //else  return 'error';
-    }
+// class HastagInput extends Component {
+//     constructor(props) {
+//       super(props);
+//       this.handleChange = this.handleChange.bind(this);
+//       this.sethashstr=this.sethashstr.bind(this);
+//       this.hashstr='';
+//       this.state = {
+//         value: ''
+//       };
+//     }
+//     sethashstr()
+//     {
+//       this.props.sethashstr(this.hashstr);
+//     }  
+//     getValidationState() {
+//       this.hashvals = getHashVal(this.state.value);
+//       if(this.hashvals)
+//       {
+//           this.hashstr=this.hashvals.join();
+//           this.hvLength =0 ||this.hashvals.length;
+//       }
+//       //this.props.sethashstr(this.hashstr)
+//       if (this.hvLength > 1) return 'success';
+//       else return 'warning';
+//       //else  return 'error';
+//     }
   
-    handleChange(e) {
-      this.setState({ value: e.target.value });
-    }
+//     handleChange(e) {
+//       this.setState({ value: e.target.value });
+//     }
   
-    render() {
-      return (
-        <form>
-          <FormGroup
-            controlId="formBasicText"
-            validationState={this.getValidationState()}>
+//     render() {
+//       return (
+        
+//         <form>
+//           <FormGroup
+//             controlId="formBasicText"
+//             validationState={this.getValidationState()}>
           
-            <ControlLabel>Please Enter hashtags seperated by space or comma</ControlLabel>
-            <FormControl
-              type="text"
-              value={this.state.value}
-              placeholder="Enter hashtags"
-              onChange={this.handleChange}
-            />
-            <FormControl.Feedback />
-            <HelpBlock>{this.hashstr}&nbsp;Number of hastags:&nbsp;{this.hvLength}</HelpBlock>
-          </FormGroup>
-        </form>
-      );
-    }
-  }
+//             <ControlLabel>Please Enter hashtags seperated by space or comma</ControlLabel>
+//             <FormControl
+//               type="text"
+//               value={this.state.value}
+//               placeholder="Enter hashtags"
+//               onChange={this.handleChange}
+//               onKey
+//             />
+//             <FormControl.Feedback />
+//             <HelpBlock>{this.hashstr}&nbsp;Number of hastags:&nbsp;{this.hvLength}</HelpBlock>
+//           </FormGroup>
+//         </form>
+//       );
+//     }
+//   }
 
-  
+@inject("store")
+@observer
 class HashTagModal extends Component {
   constructor(props) {
     super(props);
 
-    this.handleShow = this.handleShow.bind(this);
-    this.handleClose = this.handleClose.bind(this);
+    this.toggle = this.toggle.bind(this);
     this.handleOK = this.handleOK.bind(this);
     this.sethashstr=this.sethashstr.bind(this);
     this.state = {
       show: false
     };
   }
-  handleClose() {
-    this.setState({ show: false });
+  toggle() {
+    this.setState({ show: !this.state.show });
   }
-  sethashstr(hashstr)
-  {
-    this.hashstr=hashstr;
-  }
-  handleShow() {
-    this.setState({ show: true });
-  }
+  sethashstr(){
+    ;
+    // this.props.store.sethashstr(this.hashstr);
+  }  
   handleOK()
   {
       this.setState({ show: false });
@@ -88,25 +87,28 @@ class HashTagModal extends Component {
   render() {
     console.log("OKAY! "+this.state.show)
     return (
-      <div>
+      <Container>
 
-        <Button bsStyle="default" onClick={this.handleShow}>
+        <Button >{/*onClick={this.toggle}*/}
           Photos with Hashtags
         </Button>
 
-        <Modal show={this.state.show} onHide={this.handleClose}>
-          <Modal.Header closeButton>
-            <Modal.Title>Please enter hashtag(s) to filter media</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-          <HastagInput sethashstr={this.sethashstr}/>          </Modal.Body>
-          <Modal.Footer>
-            <Button onClick={this.handleOK}>OK</Button>
-            <Button onClick={this.handleClose}>Close</Button>
-          </Modal.Footer>
+        <Modal isOpen={this.state.show} toggle={this.toggle}>
+          <ModalHeader toggle={this.toggle}>Please enter hashtag(s) to filter media </ModalHeader>
+          <ModalBody>
+          {/* <HastagInput sethashstr={this.sethashstr}/> */}
+          <Input label="Enter hashtags" />
+          </ModalBody>
+          <ModalFooter>
+            <Button color="primary" onClick={this.handleOK}>OK</Button>
+            <Button color="secondary" onClick={this.toggle}>Close</Button>{' '}
+          </ModalFooter>
         </Modal>
-      </div>
+      </Container>
     );
   }
 }
+
+
+
 export default HashTagModal;

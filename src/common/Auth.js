@@ -89,6 +89,15 @@ export function asyncrequest(url, func, echo) {
             var data = JSON.parse(this.responseText);
             func(data);
         }
+        // else if (this.status >= 400 && this.responseText)
+        // {
+        //     var err = JSON.parse(this.responseText);
+        //     if(err.meta && err.meta.error_message)
+        //     {
+        //         console.log(err.meta);
+        //         func(err.meta);
+        //     }
+        // }
     };
     console.log("GET " + url);
     xhtr.open("GET", url, true);

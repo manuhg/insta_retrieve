@@ -9,6 +9,7 @@ class Datastore
     constructor() 
     {
         this.user=new User();
+        this.logout_=this.logout.bind(this);
     }
     login(acTokenVal)
     {
@@ -16,7 +17,8 @@ class Datastore
     }
     logout()
     {
-        this.user.logout();
+        if(this.user)
+            this.user.logout();
         this.login(null); //create a new null user object //enable if components are not updating
     }
     @computed get hashVals() 
