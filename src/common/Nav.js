@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import FontAwesomeIcon from '@fortawesome/react-fontawesome';
 import solids from '@fortawesome/fontawesome-free-solid';
-import { Navbar, Button, Container, NavbarBrand, NavbarNav, NavbarToggler, Collapse, NavItem } from 'mdbreact';
+import { Navbar, Container, NavbarBrand, NavbarNav, NavbarToggler, Collapse, NavItem, Dropdown,DropdownToggle,DropdownMenu,DropdownItem } from 'mdbreact';
 import { observer , inject } from "mobx-react";
 
 import logo from 'resources/pickcel.png';
@@ -14,10 +14,13 @@ class NavBarMD extends Component {
         this.state = {
             collapse: false,
             isWideEnough: false,
-            dropdownOpen: false
+            dropdownOpen: false,
+            changed:false
         };
     this.onClick = this.onClick.bind(this);
     this.toggle = this.toggle.bind(this);
+    if(!solids)
+        console.log("FA icons not found");
     }
     
 
@@ -29,46 +32,63 @@ class NavBarMD extends Component {
 
     toggle() {
         this.setState({
-            dropdownOpen: !this.state.dropdownOpen
+            dropdownOpen: !this.state.dropdownOpen,
         });
     }
-
+    doneFetching()
+    {
+        this.setState({changed:!this.state.changed,})
+    }
     render() {
-        var NavRight = () => <span style={{display:'none'}}>&nbsp;</span>;
-        const {store}=this.props;
-        if(!store.user.waiting&&store.user.isLoggedIn)
+        const NavBarRight = ()=>
         {
-            NavRight = () =>
-            <NavbarNav right>
-                {/* <NavItem> */}
-                    {/* <Image style={{width:'30%',borderRadius:'50%'}} src={store.user.dp} alt={store.user.name} responsive /> */}
-                    {/* <h3>Welcome,{store.user.name.split(' ')[0]}</h3> */}
-                {/* </NavItem> */}
-                <NavItem>
-                <div className="nav-link"><h3>Logout</h3></div>
-
-                    {/* <Button onClick={() => store.logout()}  color="primary">
-                    {(solids) ? <FontAwesomeIcon icon={['fas', 'power-off']} size='2x' /> : "Logout"}
-                    </Button> */}
-                </NavItem>
-            </NavbarNav>
+            const {user,logout}=this.props.store;
+            user.doneFetching=this.doneFetching.bind(this);
+            if(user.dp)
+            {
+                return(
+                    <NavbarNav right>
+                        <NavItem>
+                            <Dropdown isOpen={this.state.dropdownOpen} toggle={this.toggle}>
+                                <DropdownToggle nav caret>
+                                    <img style={{ height: '48px', borderRadius: '50%' }} src={user.dp} alt={user.name} /></DropdownToggle>
+                                <DropdownMenu>
+                                    <DropdownItem href="#">{user.name}</DropdownItem>
+                                    <DropdownItem href="#" onClick={() => logout()} color="primary">Logout</DropdownItem>
+                                </DropdownMenu>
+                            </Dropdown>
+                        </NavItem>
+                    </NavbarNav>
+                    );
+            }            
+            return(
+                <NavbarNav right>
+                    <NavItem>
+                        <Dropdown isOpen={this.state.dropdownOpen} toggle={this.toggle}>
+                            <DropdownToggle nav caret> <FontAwesomeIcon style={{borderRadius: '50%' }} icon={['fa', 'user']} size='4x' /> </DropdownToggle>
+                            <DropdownMenu>
+                                <DropdownItem href="#">User</DropdownItem>
+                                <DropdownItem href="#" onClick={() => logout()} color="primary">
+                                   <span> Please log in</span>
+                                </DropdownItem>
+                            </DropdownMenu>
+                        </Dropdown>
+                    </NavItem>
+                </NavbarNav>
+            );
         }
+ 
         return (
-            <Navbar color="blue-grey lighten-4" light expand="lg" sticky="top">
-                <Container>
+            <Navbar color="black" dark expand="lg">
+            <Container>
                     <NavbarBrand href="/">
                         <img src={logo} alt="logo" /> Instagram photo retriever
                     </NavbarBrand>
                     {!this.state.isWideEnough && <NavbarToggler  onClick={this.onClick} />}
                     <Collapse isOpen={this.state.collapse} navbar>
                         <NavbarNav left>
-                            {/* <NavItem active>&nbsp;
-                          </NavItem>
-                          <NavItem>
-                             &nbsp;
-                          </NavItem>                       */}
                         </NavbarNav>
-                        <NavRight />
+                        <NavBarRight />
                     </Collapse>
                 </Container>
             </Navbar>

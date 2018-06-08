@@ -11,6 +11,7 @@ class User
     constructor(acTokenVal) 
     {
         this.waiting=false;
+        this.doneFetching=null;
         console.log("Creating user actoken:"+acTokenVal);
         if (acTokenVal)
             this.login(acTokenVal);
@@ -52,6 +53,8 @@ class User
             this.dp = data.data.profile_picture;
         }
         this.waiting=false;
+        if(this.doneFetching)
+            this.doneFetching();
         console.log("No more waiting!")
     }
 }

@@ -7,10 +7,12 @@ import NavBarMD from 'common/Nav';
 
 class AppBody extends Component {
   render() {
+    var height=Math.max(document.documentElement.clientHeight-300, window.innerHeight-300,460);
+
     return (
       <span>
         <NavBarMD/>
-        <Container className="container-fluid App">
+        <Container style={{minHeight:height+'px'}} className="container-fluid App">
           <Row>
             <Col md="12">
               {this.props.children}
