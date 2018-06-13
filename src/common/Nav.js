@@ -54,16 +54,19 @@ class NavBarMD extends Component {
                     <NavbarNav right>
                     <NavItem>
                         <Dropdown isOpen={this.state.dropdownOpen2} toggle={this.toggle2}>
-                            <DropdownToggle nav caret><h4>View Media</h4></DropdownToggle>
+                            <DropdownToggle nav caret><br/>View Media</DropdownToggle>
                             <DropdownMenu>
-                                <DropdownItem href="#" onClick={()=>user.getRecentMedia()}><h4>View Recent Media</h4> </DropdownItem>
-                                <DropdownItem href="#" onClick={()=>user.getMediaByHashtag(hashVals_concat,this.props.store.getHashTags.bind(this.props.store))}><h4>View Media by Hashtag</h4> </DropdownItem>
-                                <DropdownItem href="#" onClick={()=>user.getAllMedia()}><h4>View All Media</h4> </DropdownItem>
+                                <DropdownItem href="#" onClick={()=>user.getRecentMedia()}>View Recent Media </DropdownItem>
+                                <DropdownItem href="#" onClick={()=>
+                                user.getMediaByHashtag(hashVals_concat,
+                                    ()=>{this.props.store.hmodalShow=true})
+                                    }>View Media by Hashtag </DropdownItem>
+                                <DropdownItem href="#" onClick={()=>user.getAllMedia()}>View All Media </DropdownItem>
                             </DropdownMenu>
                         </Dropdown>
                     </NavItem>
                         <NavItem>
-                            <Dropdown style={{float:'right'}}  isOpen={this.state.dropdownOpen1} toggle={this.toggle1}>
+                            <Dropdown isOpen={this.state.dropdownOpen1} toggle={this.toggle1}>
                                 <DropdownToggle nav caret>
                                     <img style={{ height: '48px', borderRadius: '50%' }} src={this.props.store.user.dp} alt={this.props.store.user.name} /></DropdownToggle>
                                 <DropdownMenu>
@@ -76,8 +79,8 @@ class NavBarMD extends Component {
                     );
             }            
             return(
-                <NavbarNav right>
-                    <NavItem>
+                <NavbarNav right>&nbsp;
+                    {/* <NavItem>
                         <Dropdown isOpen={this.state.dropdownOpen1} toggle={this.toggle1}>
                             <DropdownToggle nav caret> <FontAwesomeIcon style={{borderRadius: '50%' }} icon={['fa', 'user']} size='4x' /> </DropdownToggle>
                             <DropdownMenu>
@@ -87,7 +90,7 @@ class NavBarMD extends Component {
                                 </DropdownItem>
                             </DropdownMenu>
                         </Dropdown>
-                    </NavItem>
+                    </NavItem> */}
                 </NavbarNav>
             );
         }
@@ -96,7 +99,7 @@ class NavBarMD extends Component {
             <Navbar color="black" dark expand="lg">
             <Container>
                     <NavbarBrand href="/">
-                        <img src={logo} alt="logo" /> Instagram photo retriever
+                        <img src={logo} alt="logo" /> <h6>Instagram photo retriever</h6>
                     </NavbarBrand>
                     {!this.state.isWideEnough && <NavbarToggler  onClick={this.onClick} />}
                     <Collapse isOpen={this.state.collapse} navbar>

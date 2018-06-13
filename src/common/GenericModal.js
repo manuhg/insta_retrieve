@@ -8,6 +8,21 @@ class GenericModal extends Component {
   constructor(props) {
     super(props);
     this.toggle = this.toggle.bind(this);
+    this.onsubmit=this.onsubmit.bind(this);
+    this.onOK=this.onOK.bind(this);
+  }
+  onsubmit(e)
+  {
+    // console.log("bt")
+    // this.value="#al"
+    // console.log(e)
+  }
+  onOK()
+  {
+   // console.log("onOK")
+    // console.log(this.value)
+    // if(this.value)
+    //   this.props.store.setHashStr(this.value);
   }
 
   toggle() {
@@ -21,11 +36,13 @@ class GenericModal extends Component {
           <Modal  isOpen={this.props.store.modalShow} toggle={this.toggle} centered size="sm">
             <ModalHeader toggle={this.toggle}>{this.props.store.modalTitle}</ModalHeader>
             <ModalBody>
+            <form onSubmit={this.onsubmit}>
               <this.props.store.modalChildren/>
+              </form>
             </ModalBody>
             <ModalFooter>
               <Button color="secondary" onClick={this.toggle}>Close</Button>{' '}
-              <Button color="primary">OK</Button>
+              <Button onClick={this.onOK} color="primary">OK</Button>
             </ModalFooter>
           </Modal>
         </Container>
@@ -38,45 +55,3 @@ class GenericModal extends Component {
   }
 }
 export default GenericModal;
-
-// import React from 'react';
-// import { Button, Modal, ModalBody, ModalHeader, ModalFooter } from 'mdbreact';
-
-
-// class ModalPage extends React.Component {
-//   constructor(props) {
-//     super(props);
-//     this.state = {
-//       modal: false,
-//       backdrop: false
-//     };
-
-//     this.toggle = this.toggle.bind(this);
-//   }
-
-//   toggle() {
-//     this.setState({
-//       modal: !this.state.modal
-//     });
-//   }
-
-//   render() {
-//     return (
-//       <div>
-//         <Button color="danger" onClick={this.toggle} >Modal</Button>
-//         <Modal isOpen={this.state.modal} toggle={this.toggle} backdrop="static">
-//           <ModalHeader toggle={this.toggle}>Modal title</ModalHeader>
-//           <ModalBody>
-//             Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-//           </ModalBody>
-//           <ModalFooter>
-//             <Button color="primary" onClick={this.toggle}>Do Something</Button>{' '}
-//             <Button color="secondary" onClick={this.toggle}>Cancel</Button>
-//           </ModalFooter>
-//         </Modal>
-//       </div>
-//     );
-//   }
-// }
-
-// export default ModalPage;

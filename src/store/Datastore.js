@@ -8,6 +8,7 @@ class Datastore
     @observable addHash = true;
     @observable user = null;
     @observable hashStr = ""
+    @observable hmodalShow = false;
     @observable modalShow = false;
     @observable modalTitle = "";
     @observable modalChildren = null;
@@ -50,19 +51,15 @@ class Datastore
     }
     @action setHashStr(val) {
         val=(!val||val==='#')?' ':val;
-        this.hashStr = val;        
+        this.hashStr = val;
     }
+
     @action showModal(modalTitle, ModalBody) {
         if (modalTitle && ModalBody) {
             this.modalTitle = modalTitle
             this.modalShow = true
             this.modalChildren = ()=><ModalBody/>
         }
-
-    }
-    @action getHashTags()
-    {
-        this.showModal("Enter hashtag",()=><h1>Hi</h1>);
     }
 }
 

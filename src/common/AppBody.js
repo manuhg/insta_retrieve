@@ -3,6 +3,8 @@ import {Row, Col, Container} from 'mdbreact';
 import AppFooter from 'common/Footer';
 import NavBarMD from 'common/Nav';
 import GenericModal from 'common/GenericModal'
+import HashTagModal from 'common/HashtagModal'
+
 // import DevTools from 'mobservable-react-devtools';
 
 class AppBody extends Component {
@@ -18,7 +20,7 @@ class AppBody extends Component {
               {this.props.children}
             </Col>
           </Row>
-          <Row><GenericModal/></Row>
+          <Row><GenericModal/><br/><HashTagModal/></Row>
         </Container>
         <AppFooter/>
       </span>

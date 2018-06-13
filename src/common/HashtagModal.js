@@ -1,110 +1,62 @@
 import React, { Component } from 'react';
-import { Container,Input, Button, Modal, ModalBody, ModalHeader, ModalFooter } from 'mdbreact';
+import { Container, Button, Modal, ModalBody, ModalHeader, ModalFooter,Input } from 'mdbreact';
 import { observer , inject } from "mobx-react";
-import { getHashVal } from 'common/Auth';
 
-class HastagInput extends Component {
-    constructor(props) {
-      super(props);
-      this.handleChange = this.handleChange.bind(this);
-      this.sethashstr=this.sethashstr.bind(this);
-      this.hashstr='';
-      this.state = {
-        value: ''
-      };
-    }
-    sethashstr()
-    {
-      this.props.sethashstr(this.hashstr);
-    }  
-    getValidationState() {
-      this.hashvals = getHashVal(this.state.value);
-      if(this.hashvals)
-      {
-          this.hashstr=this.hashvals.join();
-          this.hvLength =0 ||this.hashvals.length;
-      }
-      //this.props.sethashstr(this.hashstr)
-      if (this.hvLength > 1) return 'success';
-      else return 'warning';
-      //else  return 'error';
-    }
-  
-    handleChange(e) {
-      this.setState({ value: e.target.value });
-    }
-  
-    render() {
-      return (
-        
-        <form>
-          <FormGroup
-            controlId="formBasicText"
-            validationState={this.getValidationState()}>
-          
-            <ControlLabel>Please Enter hashtags seperated by space or comma</ControlLabel>
-            <FormControl
-              type="text"
-              value={this.state.value}
-              placeholder="Enter hashtags"
-              onChange={this.handleChange}
-              onKey
-            />
-            <FormControl.Feedback />
-            <HelpBlock>{this.hashstr}&nbsp;Number of hastags:&nbsp;{this.hvLength}</HelpBlock>
-          </FormGroup>
-        </form>
-      );
-    }
-  }
-
-
-
-class HashTagModal extends Component {
+@inject("store")
+@observer
+class HashtagModal extends Component {
   constructor(props) {
     super(props);
-
     this.toggle = this.toggle.bind(this);
-    this.handleOK = this.handleOK.bind(this);
-    this.sethashstr=this.sethashstr.bind(this);
-    this.state = {
-      show: false
-    };
+    this.onsubmit=this.onsubmit.bind(this);
+    this.onchange=this.onchange.bind(this);
+    this.onOK=this.onOK.bind(this);
   }
-  toggle() {
-    this.setState({ show: !this.state.show });
-  }
-  sethashstr(){
-    ;
-    // this.props.store.sethashstr(this.hashstr);
-  }  
-  handleOK()
+  onchange(e)
   {
-      this.setState({ show: false });
-      if(this.hashstr)
-        window.location.hash=this.hashstr;
+    console.log("chg")
+    console.log(e)
   }
+  onsubmit(e)
+  {
+    this.onOK(e);
+  }
+  onOK(e)
+  {
+    console.log("onOK")
+    console.log(e)
+    // console.log(this.value)
+    // if(this.value)
+    //   this.props.store.setHashStr(this.value);
+  }
+
+  toggle() {
+    this.props.store.hmodalShow = !this.props.store.hmodalShow;
+  }
+
   render() {
-    console.log("OKAY! "+this.state.show)
-    return (
-      <Container>
-
-        <Button >{/*onClick={this.toggle}*/}
-          Photos with Hashtags
-        </Button>
-
-        <Modal isOpen={this.state.show} toggle={this.toggle}>
-          <ModalHeader toggle={this.toggle}>Please enter hashtag(s) to filter media </ModalHeader>
-          <ModalBody>
-          {/* <HastagInput sethashstr={this.sethashstr}/> */}
-          <Input label="Enter hashtags" />
-          </ModalBody>
-          <ModalFooter>
-            <Button color="primary" onClick={this.handleOK}>OK</Button>
-            <Button color="secondary" onClick={this.toggle}>Close</Button>{' '}
-          </ModalFooter>
-        </Modal>
-      </Container>
-    );
+    if (this.props.store.hmodalShow)
+      return (
+        <Container>
+          <Modal isOpen={this.props.store.hmodalShow} toggle={this.toggle} centered size="sm">
+            <ModalHeader toggle={this.toggle}>Enter Hashtag(s)</ModalHeader>
+            <ModalBody>
+              <form onSubmit={this.onsubmit}>
+                <Input onChange={this.onchange(this.value)} label="Enter Hastag(s)" size="sm" />
+              </form>
+            </ModalBody>
+            <ModalFooter>
+              <Button color="secondary" onClick={this.toggle}>Close</Button>{' '}
+              <Button onClick={this.onOK} color="primary">OK</Button>
+            </ModalFooter>
+          </Modal>
+        </Container>
+      );
+    else
+      {
+        //console.log("modal error",this.props.store.modalShow , this.props.store.modalTitle , this.props.store.modalChildren);
+        return (<Container>&nbsp;</Container>);
+      }
   }
 }
+export default HashtagModal;
