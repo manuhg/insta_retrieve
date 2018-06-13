@@ -28,8 +28,7 @@ class AuthPage extends Component
     {
         const {store}=this.props;
         var current_domain=window.location.origin+'/';
-        console.log(current_domain);
-        console.log("User is "+((!store.user.isLoggedIn)?"not":"")+" Logged in");
+        console.log("current url: "+current_domain);
 
         if(login()&&acTokenIsValid())
         {

@@ -124,11 +124,11 @@ export function getCookie(cname) {
             cvalue = (!cvalue || cvalue === "")
                 ? "#"
                 : cvalue;
-            console.log("Get cookie " + cname + "=" + cvalue);
+            //console.log("Get cookie " + cname + "=" + cvalue);
             return cvalue;
         }
     }
-    console.log("Get cookie " + cname + "=" + cvalue);
+    //console.log("Get cookie " + cname + "=" + cvalue);
     return cvalue;
 }
 export function setCookie(cname, cvalue, exdays) {
@@ -141,14 +141,14 @@ export function setCookie(cname, cvalue, exdays) {
     d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
     var expires = "expires=" + d.toUTCString();
     document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/;";
-    console.log("set cookie " + cname + "=" + cvalue);
+    //console.log("set cookie " + cname + "=" + cvalue);
 }
 export function removeCookie(cname) {
     var d = new Date();
     d.setTime(0);
     var expires = "expires=" + d.toUTCString();
     document.cookie = cname + "=0;" + expires + ";path=/;";
-    console.log("remove cookie " + cname);
+    //console.log("remove cookie " + cname);
 
 }
 ////////////////////////////////////////////////////////////////////////////////

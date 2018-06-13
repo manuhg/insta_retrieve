@@ -11,7 +11,7 @@ class User
     @observable data
     constructor(acTokenVal) 
     {
-        console.log("Creating user actoken:"+acTokenVal);
+        //console.log("Creating user actoken:"+acTokenVal);
         if (acTokenVal)
             this.login(acTokenVal);
     }
@@ -52,13 +52,21 @@ class User
             this.dp = data.data.profile_picture;
         }
         this.waiting=false;
-        console.log("No more waiting!")
+        console.log("Fetching complete")
     }
     getRecentMedia() {
         asyncrequest('https://api.instagram.com/v1/users/self/media/recent/?access_token=' + this.acTokenVal, this.fetchMediaData.bind(this))
     }
-    getMediaByHashtag(hashtag) {
-        asyncrequest('https://api.instagram.com/v1/tags/' + hashtag + '/media/recent?access_token=' + this.acTokenVal, this.fetchMediaData.bind(this));
+    getMediaByHashtag(hashtag,fallbackFunc) {
+        if(hashtag)
+            asyncrequest('https://api.instagram.com/v1/tags/' + hashtag + '/media/recent?access_token=' + this.acTokenVal, this.fetchMediaData.bind(this));
+        else
+        {
+            if(fallbackFunc)
+                fallbackFunc()
+            else
+                console.log("HASH error!");
+        }
     }
     getAllMedia() {
         asyncrequest('https://api.instagram.com/v1/tags/nofilter/media/recent?access_token=' + this.acTokenVal, this.fetchMediaData.bind(this))
@@ -83,7 +91,7 @@ class User
             // if(imgdata)
                 this.data=imgdata;
         }
-    console.log("No more waiting!")
+    console.log("Fetching complete")
     console.log(data);
     }
     getMediaByHashtags() {

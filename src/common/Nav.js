@@ -47,7 +47,7 @@ class NavBarMD extends Component {
     render() {
         const NavBarRight = ()=>
         {
-            const {user,logout_}=this.props.store;
+            const {user,logout_,hashVals_concat}=this.props.store;
             if(user.isLoggedIn)
             {
                 return(
@@ -57,7 +57,7 @@ class NavBarMD extends Component {
                             <DropdownToggle nav caret><h4>View Media</h4></DropdownToggle>
                             <DropdownMenu>
                                 <DropdownItem href="#" onClick={()=>user.getRecentMedia()}><h4>View Recent Media</h4> </DropdownItem>
-                                <DropdownItem href="#" onClick={()=>user.getMediaByHashtag()}><h4>View Media by Hashtag</h4> </DropdownItem>
+                                <DropdownItem href="#" onClick={()=>user.getMediaByHashtag(hashVals_concat,this.props.store.getHashTags.bind(this.props.store))}><h4>View Media by Hashtag</h4> </DropdownItem>
                                 <DropdownItem href="#" onClick={()=>user.getAllMedia()}><h4>View All Media</h4> </DropdownItem>
                             </DropdownMenu>
                         </Dropdown>

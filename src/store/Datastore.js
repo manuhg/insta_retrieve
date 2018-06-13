@@ -1,11 +1,16 @@
 import { computed,action, observable } from 'mobx';
+import React from 'react';
+
 import User from 'store/User';
 
 class Datastore 
 {
     @observable addHash = true;
-    @observable user
+    @observable user = null;
     @observable hashStr = ""
+    @observable modalShow = false;
+    @observable modalTitle = "";
+    @observable modalChildren = null;
     constructor() 
     {
         this.user=new User();
@@ -37,22 +42,28 @@ class Datastore
             if (this.addHash)
                 hashvals_arr[i] = '#' + hashvals_arr[i];
         }
-        //this.hashVals.replace(hashvals_arr);
         return hashvals_arr;
     }
-
+    @computed get hashVals_concat()
+    {
+        return this.hashVals.join('');
+    }
     @action setHashStr(val) {
         val=(!val||val==='#')?' ':val;
-        this.hashStr = val;
-        // var arr=this.hashStr.split('#')
-        // for (var i = 0; i < arr.length; i++)
-        //     if (!arr[i])
-        //         arr.splice(i, 1);
-        // this.hashStr='#'+arr.join('#');
-        // console.log("sethashstr:",arr,'=>',this.hashStr)
-        
+        this.hashStr = val;        
     }
+    @action showModal(modalTitle, ModalBody) {
+        if (modalTitle && ModalBody) {
+            this.modalTitle = modalTitle
+            this.modalShow = true
+            this.modalChildren = ()=><ModalBody/>
+        }
 
+    }
+    @action getHashTags()
+    {
+        this.showModal("Enter hashtag",()=><h1>Hi</h1>);
+    }
 }
 
 export default Datastore;

@@ -50,7 +50,6 @@ class Pictures extends Component {
             if (Imglist && Imglist.length > 0) 
                 Images = () => <Row className="text-center text-lg-left">{Imglist}</Row>;
             }
-        console.log(store);
         return (
             <AppBody>
                 <Container>
