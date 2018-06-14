@@ -8,10 +8,11 @@ class Datastore
     @observable addHash = true;
     @observable user = null;
     @observable hashStr = ""
-    @observable hmodalShow = false;
-    @observable modalShow = false;
-    @observable modalTitle = "";
-    @observable modalChildren = null;
+    @observable modal = {
+        @observable show:false,
+        @observable title:"",
+        @observable onSubmit:null,
+        @observable children:null};
     constructor() 
     {
         this.user=new User();
@@ -29,11 +30,11 @@ class Datastore
     }
     @computed get hashVals() 
     {
-        if (!this.hashstr || this.hashStr.indexOf('#') === -1)
+        if (!this.hashStr || this.hashStr.indexOf('#') === -1)
             return [];
 
         // in case user specifies multiple hashes
-        var hashvals_arr = this.hashstr.split('#');
+        var hashvals_arr = this.hashStr.split('#');
         for (var i = 0; i < hashvals_arr.length; i++)
             if (!hashvals_arr[i])
                 hashvals_arr.splice(i, 1);
@@ -54,11 +55,12 @@ class Datastore
         this.hashStr = val;
     }
 
-    @action showModal(modalTitle, ModalBody) {
+    @action showModal(modalTitle, ModalBody,onSubmit) {
         if (modalTitle && ModalBody) {
-            this.modalTitle = modalTitle
-            this.modalShow = true
-            this.modalChildren = ()=><ModalBody/>
+            this.modal.show = true
+            this.modal.title = modalTitle
+            this.modal.onSubmit = onSubmit
+            this.modal.children =()=> <ModalBody/>
         }
     }
 }

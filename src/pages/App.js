@@ -15,6 +15,7 @@ class App extends Component
   {
     super(props);
     const {store} = this.props;
+
     document.body.onhashchange = this.onhashchange.bind(this);
 
     store.login(Auth.getCookie(Auth.acToken));

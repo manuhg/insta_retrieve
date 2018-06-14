@@ -1,6 +1,6 @@
 import { asyncrequest } from 'common/Auth';
 import { computed,action, observable } from 'mobx';
-import { logout as auth_logout} from 'common/Auth';
+import { logout as auth_logout,acTokenIsValid} from 'common/Auth';
 
 class User 
 {
@@ -21,6 +21,11 @@ class User
     }
     @action login(acTokenVal) 
     {
+        if(!acTokenVal && acTokenIsValid(acTokenVal))
+        {
+            console.log("access token :"+acTokenVal+" rejected");
+            return;
+        }
         this.acTokenVal=acTokenVal;
         console.log("Logging in, access token:"+this.acTokenVal)
         this.waiting=false;

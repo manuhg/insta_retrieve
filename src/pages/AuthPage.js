@@ -12,11 +12,6 @@ import { login, auth_url, authorized_domains, getCookie, acToken, acTokenIsValid
 @observer
 class AuthPage extends Component
 {
-    constructor()
-    {
-        super();
-        this.state={redirect:false};
-    }
     findIndex()
     {
         for(var i=0;i<authorized_domains.length;i++)
@@ -33,20 +28,19 @@ class AuthPage extends Component
         if(login()&&acTokenIsValid())
         {
             store.login(getCookie(acToken));
-            this.setState({redirect:true});
             return (<AppBody> <div><h2>Logging in..</h2><h4>Please Wait</h4></div></AppBody>);
         }
 
         return (<AppBody> 
             <div>
             <br/><br/>
-            <h2>Welcome to Pickcel Instagram Photo Retriever</h2>
-            <h3>Please log in with your instagram account so that we can retrieve the media in your account.</h3>
+            <h3>Welcome to Pickcel Instagram Photo Retriever</h3>
+            <h4>Please log in with your instagram account so that we can retrieve the media in your account.</h4>
                 <a
                     href={"https://api.instagram.com/oauth/authorize/?client_id=73b2e998521244e2b98b255943b42e87&redirect_uri="+current_domain+auth_url+"&response_type=token&scope=basic+public_content"}>
                     <Button>
                     {(brands)?<FontAwesomeIcon style={{float:'left'}} icon={['fab', 'instagram']} size='4x'/>:""}
-                        <h3>Login with Instagram</h3>
+                        <h4>Login with Instagram</h4>
                     </Button>
                 </a>
             <br/><br/>

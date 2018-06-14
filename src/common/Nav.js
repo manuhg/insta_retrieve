@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
 import 'mobx';
-import FontAwesomeIcon from '@fortawesome/react-fontawesome';
-import solids from '@fortawesome/fontawesome-free-solid';
 import { Navbar, Container, NavbarBrand, NavbarNav, NavbarToggler, Collapse, NavItem, Dropdown,DropdownToggle,DropdownMenu,DropdownItem } from 'mdbreact';
 import { observer , inject } from "mobx-react";
 
 import logo from 'resources/pickcel.png';
+import HashtagModal from 'common/HashtagModal';
 
 @inject("store")
 @observer
@@ -22,10 +21,7 @@ class NavBarMD extends Component {
     this.onClick = this.onClick.bind(this);
     this.toggle1 = this.toggle1.bind(this);
     this.toggle2 = this.toggle2.bind(this);
-    if(!solids)
-        console.log("FA icons not found");
     }
-    
 
     onClick(){
         this.setState({
@@ -43,7 +39,11 @@ class NavBarMD extends Component {
             dropdownOpen2: !this.state.dropdownOpen2,
         });
     }
-
+    showHModal()
+    {
+        this.props.store.showModal("Enter hashtags",()=><HashtagModal />,
+         () => <span>&nbsp;</span>)
+    }
     render() {
         const NavBarRight = ()=>
         {
@@ -57,10 +57,9 @@ class NavBarMD extends Component {
                             <DropdownToggle nav caret><br/>View Media</DropdownToggle>
                             <DropdownMenu>
                                 <DropdownItem href="#" onClick={()=>user.getRecentMedia()}>View Recent Media </DropdownItem>
-                                <DropdownItem href="#" onClick={()=>
-                                user.getMediaByHashtag(hashVals_concat,
-                                    ()=>{this.props.store.hmodalShow=true})
-                                    }>View Media by Hashtag </DropdownItem>
+                                <DropdownItem href="#" onClick=
+                                {()=>user.getMediaByHashtag(hashVals_concat,this.showHModal.bind(this))}
+                                    >View Media by Hashtag </DropdownItem>
                                 <DropdownItem href="#" onClick={()=>user.getAllMedia()}>View All Media </DropdownItem>
                             </DropdownMenu>
                         </Dropdown>
