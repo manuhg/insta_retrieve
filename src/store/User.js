@@ -12,6 +12,7 @@ class User
     constructor(acTokenVal) 
     {
         this.error=false;
+        this.errtag=''
         if (acTokenVal)
             this.login(acTokenVal);
     }
@@ -46,21 +47,26 @@ class User
     getUserDetails() 
     {
         this.waiting=true;
+        console.log("Fetching user details")
         asyncrequest('https://api.instagram.com/v1/users/self/?access_token=' + this.acTokenVal, this.fetchUserDetails.bind(this));
     }
     getRecentMedia() {
+        console.log("Fetching recent media")
         asyncrequest('https://api.instagram.com/v1/users/self/media/recent/?access_token=' + this.acTokenVal, this.fetchMediaData.bind(this))
     }
-    getMediaByHashtag(hashtag,fallbackFunc) {
+    getMediaByHashtag(hashtag) {
+        hashtag=hashtag.trim()
+        if(this.errtag===hashtag)
+            return false;
+        this.errtag=hashtag
         if(hashtag)
-            asyncrequest('https://api.instagram.com/v1/tags/' + hashtag + '/media/recent?access_token=' + this.acTokenVal, this.fetchMediaData.bind(this));
-        else
         {
-            if(fallbackFunc)
-                fallbackFunc()
-            else
-                console.log("HASH error!");
+            console.log("Fetching media with hashtag "+hashtag)
+            asyncrequest('https://api.instagram.com/v1/tags/' + hashtag + '/media/recent?access_token=' + this.acTokenVal, this.fetchMediaData.bind(this));
         }
+        else
+            return false;
+        return true;
     }
     getAllMedia() {
         asyncrequest('https://api.instagram.com/v1/tags/nofilter/media/recent?access_token=' + this.acTokenVal, this.fetchMediaData.bind(this))
@@ -68,30 +74,26 @@ class User
 
     @action fetchUserDetails(data,err)
     {
-        if(err)
-        {
-            this.error=err;
-            this.data=null;
-        }
-        console.log("Fetching user details")
+        this.error=err;
+        if(err) this.data=null;
         if (data && data.data.full_name && data.data.profile_picture) {
             this.name = data.data.full_name;
             this.dp = data.data.profile_picture;
         }
         this.waiting=false;
-        console.log("Fetching complete")
+        var op = []
+        op.push("Fetching complete")
+        if (err) op.push("Error")
+        else op.push(data)
+        console.log(op)
     }
     @action fetchMediaData(data,err)
     {
-        if(err)
-        {
-            this.error=err;
-            this.data=null;
-        }
+        this.error=err;
+        if(err) this.data=null;
         if (data) {
-            // if(data.meta && data.meta.err)
-            //     data=null;
             var imgdata = {};
+            this.errtag=''
             for (var i = 0; i < data.data.length; i++) {
                 var alt = (data.data[i].caption)
                     ? data.data[i].caption.text
@@ -103,11 +105,13 @@ class User
                     tags: data.data[i].tags
                 };
             }
-            // if(imgdata)
-                this.data=imgdata;
+            this.data=imgdata;
         }
-    console.log("Fetching complete")
-    console.log(data);
+        var op = []
+        op.push("Fetching complete")
+        if (err) op.push("Error")
+        else op.push(data)
+        console.log(op)
     }
     getMediaByHashtags() {
        // if (!this.HashtagsSpecified)

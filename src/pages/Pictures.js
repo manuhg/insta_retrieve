@@ -25,24 +25,25 @@ function Image(props) {
 class Pictures extends Component {
     render() {
         const {user}=this.props.store;
-        this.props.store.getHashtagsMedia()
+        
         var Contents = () => (
             <Row>
                 <Col>&nbsp;</Col>
             </Row>
         );
         if (user.isLoggedIn) {
-            if (user.error)
-            {
-                console.log("ERROR!")
-                Contents = () => (
-                    <Row>
-                        <Col><Card><h2>Data not found!</h2><h3>Sorry for the incoveniecne</h3><h4>
-                        {(user.error.meta && user.error.meta.error_message)?user.error.meta.error_message:""}</h4></Card></Col>
-                    </Row>
-                );
-            }
-            else if (user.data) {
+            // if (user.error)
+            // {
+            //     console.log("ERROR!")
+            //     Contents = () => (
+            //         <Row>
+            //             <Col><Card><h2>Data not found!</h2><h3>Sorry for the incoveniecne</h3><h4>
+            //             {(user.error.meta && user.error.meta.error_message)?user.error.meta.error_message:""}</h4></Card></Col>
+            //         </Row>
+            //     );
+            // }
+            // else 
+            if (user.data) {
                 var Imglist = [];
                 for (var i in user.data) {
                     Imglist.push(<Image key={i} data={user.data[i]} />);

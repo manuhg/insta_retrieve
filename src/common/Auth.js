@@ -95,6 +95,8 @@ export function asyncrequest(url, func, echo) {
             try
             {
                 err = JSON.parse(this.responseText);
+                if(err.meta && err.meta.error_message)
+                    err=err.meta.error_message;
             }catch(e){;}
             func(null,err)
             // if(err.meta && err.meta.error_message)

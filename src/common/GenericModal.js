@@ -16,7 +16,6 @@ class GenericModal extends Component {
 
   render() {
     const {modal}=this.props.store;
-    console.log(modal)
     if (modal && modal.show && modal.title && modal.onSubmit && modal.children)
       return (
         <Container>

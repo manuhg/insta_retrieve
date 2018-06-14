@@ -51,10 +51,10 @@ class NavBarMD extends Component {
                         <Dropdown isOpen={this.state.dropdownOpen2} toggle={this.toggle2}>
                             <DropdownToggle nav caret><br/>View Media</DropdownToggle>
                             <DropdownMenu>
-                                <DropdownItem href="#" onClick={()=>user.getRecentMedia()}>View Recent Media </DropdownItem>
-                                <DropdownItem href="#" onClick={()=>this.props.store.getHashtagsMedia()}
+                                <DropdownItem href="" onClick={()=>user.getRecentMedia()}>View Recent Media </DropdownItem>
+                                <DropdownItem href="" onClick={()=>this.props.store.getHashtagsMedia()}
                                     >View Media by Hashtag </DropdownItem>
-                                <DropdownItem href="#" onClick={()=>user.getAllMedia()}>View All Media </DropdownItem>
+                                <DropdownItem href="" onClick={()=>user.getAllMedia()}>View All Media </DropdownItem>
                             </DropdownMenu>
                         </Dropdown>
                     </NavItem>
@@ -63,8 +63,8 @@ class NavBarMD extends Component {
                                 <DropdownToggle nav caret>
                                     <img style={{ height: '48px', borderRadius: '50%' }} src={this.props.store.user.dp} alt={this.props.store.user.name} /></DropdownToggle>
                                 <DropdownMenu>
-                                    <DropdownItem href="#">{this.props.store.user.name}</DropdownItem>
-                                    <DropdownItem href="#" onClick={() => logout_()}>Logout</DropdownItem>
+                                    <DropdownItem href="">{this.props.store.user.name}</DropdownItem>
+                                    <DropdownItem href="" onClick={() => logout_()}>Logout</DropdownItem>
                                 </DropdownMenu>
                             </Dropdown>
                         </NavItem>
@@ -77,8 +77,8 @@ class NavBarMD extends Component {
                         <Dropdown isOpen={this.state.dropdownOpen1} toggle={this.toggle1}>
                             <DropdownToggle nav caret> <FontAwesomeIcon style={{borderRadius: '50%' }} icon={['fa', 'user']} size='4x' /> </DropdownToggle>
                             <DropdownMenu>
-                                <DropdownItem href="#">User</DropdownItem>
-                                <DropdownItem href="#">
+                                <DropdownItem href="">User</DropdownItem>
+                                <DropdownItem href="">
                                    <span> Please log in</span>
                                 </DropdownItem>
                             </DropdownMenu>

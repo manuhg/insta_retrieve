@@ -66,8 +66,11 @@ class Datastore
     }
     @action getHashtagsMedia()
     {
-        this.user.getMediaByHashtag(this.hashVals_concat, ()=>this.showModal("Enter hashtags", () => <HashtagModal />, () => <span>&nbsp;</span>))
-
+        if(!this.user.getMediaByHashtag(this.hashVals_concat))
+        {
+            this.showModal("Enter hashtags", () => <HashtagModal />, () => <span>&nbsp;</span>);
+            this.user.getMediaByHashtag(this.hashVals_concat)
+        }
     }
 }
 
