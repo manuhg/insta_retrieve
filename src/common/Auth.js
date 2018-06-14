@@ -89,15 +89,19 @@ export function asyncrequest(url, func, echo) {
             var data = JSON.parse(this.responseText);
             func(data);
         }
-        // else if (this.status >= 400 && this.responseText)
-        // {
-        //     var err = JSON.parse(this.responseText);
-        //     if(err.meta && err.meta.error_message)
-        //     {
-        //         console.log(err.meta);
-        //         func(err.meta);
-        //     }
-        // }
+        else if (this.status >= 400 && this.responseText)
+        {
+            var err=this.responseText;
+            try
+            {
+                err = JSON.parse(this.responseText);
+            }catch(e){;}
+            func(null,err)
+            // if(err.meta && err.meta.error_message)
+            // {
+            //     func(null,err.meta);
+            // }
+        }
     };
     console.log("GET " + url);
     xhtr.open("GET", url, true);

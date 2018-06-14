@@ -4,7 +4,6 @@ import { Navbar, Container, NavbarBrand, NavbarNav, NavbarToggler, Collapse, Nav
 import { observer , inject } from "mobx-react";
 
 import logo from 'resources/pickcel.png';
-import HashtagModal from 'common/HashtagModal';
 
 @inject("store")
 @observer
@@ -39,15 +38,11 @@ class NavBarMD extends Component {
             dropdownOpen2: !this.state.dropdownOpen2,
         });
     }
-    showHModal()
-    {
-        this.props.store.showModal("Enter hashtags",()=><HashtagModal />,
-         () => <span>&nbsp;</span>)
-    }
+
     render() {
         const NavBarRight = ()=>
         {
-            const {user,logout_,hashVals_concat}=this.props.store;
+            const {user,logout_,getHashtagsMedia}=this.props.store;
             if(user.isLoggedIn)
             {
                 return(
@@ -57,8 +52,7 @@ class NavBarMD extends Component {
                             <DropdownToggle nav caret><br/>View Media</DropdownToggle>
                             <DropdownMenu>
                                 <DropdownItem href="#" onClick={()=>user.getRecentMedia()}>View Recent Media </DropdownItem>
-                                <DropdownItem href="#" onClick=
-                                {()=>user.getMediaByHashtag(hashVals_concat,this.showHModal.bind(this))}
+                                <DropdownItem href="#" onClick={()=>this.props.store.getHashtagsMedia()}
                                     >View Media by Hashtag </DropdownItem>
                                 <DropdownItem href="#" onClick={()=>user.getAllMedia()}>View All Media </DropdownItem>
                             </DropdownMenu>

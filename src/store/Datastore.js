@@ -2,6 +2,7 @@ import { computed,action, observable } from 'mobx';
 import React from 'react';
 
 import User from 'store/User';
+import HashtagModal from 'common/HashtagModal';
 
 class Datastore 
 {
@@ -62,6 +63,11 @@ class Datastore
             this.modal.onSubmit = onSubmit
             this.modal.children =()=> <ModalBody/>
         }
+    }
+    @action getHashtagsMedia()
+    {
+        this.user.getMediaByHashtag(this.hashVals_concat, ()=>this.showModal("Enter hashtags", () => <HashtagModal />, () => <span>&nbsp;</span>))
+
     }
 }
 

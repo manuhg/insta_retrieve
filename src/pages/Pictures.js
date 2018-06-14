@@ -3,6 +3,7 @@ import { Card, CardBody, CardImage, CardTitle, CardText, Row, Col, Container } f
 import 'mobx';
 import { observer , inject } from "mobx-react";
 import AppBody from 'common/AppBody';
+import HashtagModal from 'common/HashtagModal';
 
 function Image(props) {
     var data = props.data;
@@ -23,46 +24,56 @@ function Image(props) {
 @observer
 class Pictures extends Component {
     render() {
-        const {store} = this.props;
-        const {user} = store;
-        if (!store.user.isLoggedIn) 
-            return (
-                <AppBody>
-                    <div>
-                        <h3
-                            style={{
-                            color: 'red'
-                        }}>You need to be logged in</h3>
-                    </div>
-                </AppBody>
-            );
-        
-        var Images = () => (
+        const {user}=this.props.store;
+        this.props.store.getHashtagsMedia()
+        var Contents = () => (
             <Row>
                 <Col>&nbsp;</Col>
             </Row>
         );
-        if (user.isLoggedIn && user.data) {
-            var Imglist = [];
-            for (var i in user.data) {
-                Imglist.push(<Image key={i} data={user.data[i]}/>);
+        if (user.isLoggedIn) {
+            if (user.error)
+            {
+                console.log("ERROR!")
+                Contents = () => (
+                    <Row>
+                        <Col><Card><h2>Data not found!</h2><h3>Sorry for the incoveniecne</h3><h4>
+                        {(user.error.meta && user.error.meta.error_message)?user.error.meta.error_message:""}</h4></Card></Col>
+                    </Row>
+                );
             }
-            if (Imglist && Imglist.length > 0) 
-                Images = () => <Row className="text-center text-lg-left">{Imglist}</Row>;
+            else if (user.data) {
+                var Imglist = [];
+                for (var i in user.data) {
+                    Imglist.push(<Image key={i} data={user.data[i]} />);
+                }
+                if (Imglist && Imglist.length > 0)
+                {
+                    Imglist.push(<Card><h3>{this.props.store.hashStr}</h3></Card>);
+                    Contents = () => <Row className="text-center text-lg-left">{Imglist}</Row>;
+                }
             }
+            else
+                Contents = () => (
+                <Row className="text-center text-lg-center">
+                    <Col md="12">
+                    <br/><br/><br/><br/>
+                    <Card style={{display:'inline-block'}} className="align-middle"><h3>Loading..</h3><h5>Please wait</h5></Card>
+                    </Col>
+                </Row>);
+        }
+        else
+            Contents = () => (
+            <Row>
+                <Col><Card><h2>You need to be logged in</h2><h4>If you have already done so, please wait until login details are received</h4></Card></Col>
+            </Row>);
         return (
             <AppBody>
                 <Container>
-                    <Row className="text-center text-lg-left">
+                    <Row className="text-center text-lg-center">
                         <Col md="12" className="text-center">
                             <Container>
-                                {/* <Row className="text-center text-lg-left">
-                                <Col md="4"><Button onClick={() => this.getAllMedia()}>All Photos</Button> </Col>
-                                <Col md="4" > <Button onClick={() => this.getRecentMedia()}>Recent Photos</Button></Col>
-                                <Col md="4">{(store.hashStr.trim()) ? <Button onClick={() => this.getMediaByHashtags()}>Photos with {store.hashStr}</Button>
-                                    : <HashTagModal />}</Col>
-                            </Row> */}
-                                <Images/>
+                                <Contents/>
                             </Container>
                         </Col>
 

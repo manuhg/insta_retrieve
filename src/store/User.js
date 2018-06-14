@@ -11,7 +11,7 @@ class User
     @observable data
     constructor(acTokenVal) 
     {
-        //console.log("Creating user actoken:"+acTokenVal);
+        this.error=false;
         if (acTokenVal)
             this.login(acTokenVal);
     }
@@ -48,17 +48,6 @@ class User
         this.waiting=true;
         asyncrequest('https://api.instagram.com/v1/users/self/?access_token=' + this.acTokenVal, this.fetchUserDetails.bind(this));
     }
-    
-    @action fetchUserDetails(data) 
-    {
-        console.log("Fetching user details")
-        if (data && data.data.full_name && data.data.profile_picture) {
-            this.name = data.data.full_name;
-            this.dp = data.data.profile_picture;
-        }
-        this.waiting=false;
-        console.log("Fetching complete")
-    }
     getRecentMedia() {
         asyncrequest('https://api.instagram.com/v1/users/self/media/recent/?access_token=' + this.acTokenVal, this.fetchMediaData.bind(this))
     }
@@ -77,7 +66,28 @@ class User
         asyncrequest('https://api.instagram.com/v1/tags/nofilter/media/recent?access_token=' + this.acTokenVal, this.fetchMediaData.bind(this))
     }
 
-    @action fetchMediaData(data) {
+    @action fetchUserDetails(data,err)
+    {
+        if(err)
+        {
+            this.error=err;
+            this.data=null;
+        }
+        console.log("Fetching user details")
+        if (data && data.data.full_name && data.data.profile_picture) {
+            this.name = data.data.full_name;
+            this.dp = data.data.profile_picture;
+        }
+        this.waiting=false;
+        console.log("Fetching complete")
+    }
+    @action fetchMediaData(data,err)
+    {
+        if(err)
+        {
+            this.error=err;
+            this.data=null;
+        }
         if (data) {
             // if(data.meta && data.meta.err)
             //     data=null;
